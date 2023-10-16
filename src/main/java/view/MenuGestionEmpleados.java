@@ -2,10 +2,13 @@ package view;
 
 import java.util.List;
 
+import dao.GestionEmpleados;
 import io.IO;
 
 public class MenuGestionEmpleados {
 	public static void mostrarMenu() {
+		GestionEmpleados gEmpleado = new GestionEmpleados();
+		
 		List<String> opciones = List.of( 
 				" =======|MENU EMPLEADOS|========\n",
 				"| 1.- Listar Empleados	|\n", 
