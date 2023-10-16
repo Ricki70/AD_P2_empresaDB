@@ -11,10 +11,10 @@ public class Departamento {
 	private UUID id;
 	private String nombre;
 	private String jefe;
-	
+
 	public Departamento(String nombre, String jefe) {
-			setId(UUID.randomUUID());
-			setNombre(nombre);
-			setJefe(jefe);
+		setId(UUID.randomUUID());
+		setNombre(nombre);
+		setJefe(jefe);
 	}
 }
