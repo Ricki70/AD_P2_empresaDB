@@ -20,24 +20,25 @@ public class MenuGestionEmpleados {
 				);
 		
 		while (true) {
-			System.out.print(opciones + "\nIntroduce tu eleccion: ");
-			switch (IO.readString().toUpperCase().charAt(0)) {
-			case '1':
-				
-				break;
-			case '2':
-				
-				break;
-			case '3':
-				
-				break;
-			case '4':
-				
-				break;
-			case '5':
-				MenuPrincipal.main(null);
-				break;
-			default:
+			opciones.stream().forEach(System.out :: print);
+			System.out.print("\nIntroduce tu eleccion: ");
+			switch (IO.readInt()) {
+				case '1':
+					
+					break;
+				case '2':
+					
+					break;
+				case '3':
+					
+					break;
+				case '4':
+					
+					break;
+				case '5':
+					MenuPrincipal.main(null);
+					break;
+				default:
 			}
 		}
     }

@@ -12,19 +12,20 @@ public class MenuPrincipal {
 				"| 1.- Gestionar Departamentos	|\n", 
 				"| 2.- Gestionar Empleados	|\n", 
 				"| 3.- Salir			|\n",
-				"===============================\n"		
+				" ===============================\n"		
 				);
 		
 		while (true) {
-			System.out.print(opciones + "\nIntroduce tu eleccion: ");
-			switch (IO.readString().toUpperCase().charAt(0)) {
-				case '1':
+			opciones.stream().forEach(System.out :: print);
+			System.out.print("\nIntroduce tu eleccion: ");
+			switch (IO.readInt()) {
+				case '1':  // menú departamentos
 					MenuGestionDepartamentos.mostrarMenu();
 					break;
-				case '2':
+				case '2':  // menú empleados
 					MenuGestionEmpleados.mostrarMenu();
 					break;
-				case '3':
+				case '3':  // salir del menú
 					System.out.println("\nHas salido del menú");
 					return;
 				default:
