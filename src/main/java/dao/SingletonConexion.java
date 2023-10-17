@@ -36,14 +36,17 @@ public class SingletonConexion {
                 connection = DriverManager.getConnection(url);
             }
             
-            System.out.println("Conexion Exitosa a: " + name);
+            System.out.println("Conexion exitosa a: " + name);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Error al establecer la conexión a la base de datos.");
         }
     }
 
- // Método estático que devuelve la conexión
+ 	/**
+ 	 * Método que devuelve la conexión a la base de datos.
+ 	 * @return conexión
+ 	 */
     public static Connection getConnection() {
         if (connection == null) {
             new SingletonConexion();
