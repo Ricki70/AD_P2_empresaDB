@@ -39,7 +39,7 @@ public class SingletonConexion {
             System.out.println("Conexion exitosa a: " + name);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-            throw new RuntimeException(" Error al establecer la conexión a la base de datos.");
+            throw new RuntimeException("Error al establecer la conexión a la base de datos.");
         }
     }
 
