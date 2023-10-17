@@ -2,6 +2,7 @@ package view;
 
 import java.util.List;
 
+import dao.SingletonConexion;
 import io.IO;
 
 public class MenuPrincipal {
@@ -15,18 +16,21 @@ public class MenuPrincipal {
 				" ===============================\n"		
 				);
 		
+		SingletonConexion.getConnection();
+		
 		while (true) {
 			opciones.stream().forEach(System.out :: print);
 			System.out.print("\nIntroduce tu eleccion: ");
 			switch (IO.readInt()) {
-				case '1':  // menú departamentos
+				case 1:  // menú departamentos
 					MenuGestionDepartamentos.mostrarMenu();
 					break;
-				case '2':  // menú empleados
+				case 2:  // menú empleados
 					MenuGestionEmpleados.mostrarMenu();
 					break;
-				case '3':  // salir del menú
+				case 3:  // salir del menú
 					System.out.println("\nHas salido del menú");
+					SingletonConexion.closeConnection();
 					return;
 				default:
 					System.out.println("Opción no válida");

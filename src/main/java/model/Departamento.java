@@ -10,9 +10,9 @@ import lombok.*;
 public class Departamento {
 	private UUID id;
 	private String nombre;
-	private String jefe;
+	private Empleado jefe;
 
-	public Departamento(String nombre, String jefe) {
+	public Departamento(String nombre, Empleado jefe) {
 		setId(UUID.randomUUID());
 		setNombre(nombre);
 		setJefe(jefe);
