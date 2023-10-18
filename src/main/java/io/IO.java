@@ -224,6 +224,21 @@ public class IO {
 		}
 	}
 	
+	static public UUID readUUIDOpcional() {
+		while (true) {
+			try {
+				String lectura = IO.readString();
+				if (lectura.isEmpty()) {
+					return new UUID(0, 0);
+				}else {
+					return java.util.UUID.fromString(IO.readString());	
+				}
+			} catch (Exception e) {
+				System.err.print("ERROR: no es de tipo UUID [ej: " + new UUID(0, 0) + "] ? ");
+			}
+		}
+	}
+	
 	/**
 	 * Lee un valor de tipo LocalDate
 	 * @return

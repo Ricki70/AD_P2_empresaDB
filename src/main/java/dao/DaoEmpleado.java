@@ -15,7 +15,7 @@ import view.MenuPrincipal;
 public class DaoEmpleado implements DaoInterface<Empleado>{
 	
 	@Override
-	public String listar() {
+	public String listar() {//TODO: Revisar la fecha, da error SOLO en la segunda iteracion
 		StringBuilder sb = new StringBuilder();
         try {
             String sql = "SELECT * FROM empleado";
@@ -41,7 +41,6 @@ public class DaoEmpleado implements DaoInterface<Empleado>{
 	@Override
 	public Boolean insert(Empleado empleado) {
 		 try {
-//	        	conn = SingletonSQLite.getConnection();
 	            String sql = "INSERT INTO empleado (id, nombre, salario, nacido, departamento) VALUES (?, ?, ?, ?, ?)";
 	            PreparedStatement pstmt = MenuPrincipal.conn.prepareStatement(sql);
 	            
@@ -52,7 +51,6 @@ public class DaoEmpleado implements DaoInterface<Empleado>{
 	            pstmt.setString(5, empleado.getDepartamento().getId().toString());
 
 	            int affectedRows = pstmt.executeUpdate();
-//	            conn.close();
 	            pstmt.close();
 	            return affectedRows > 0;
 	        } catch (SQLException e) {
@@ -62,7 +60,7 @@ public class DaoEmpleado implements DaoInterface<Empleado>{
 	}
 	
 	@Override
-	public Boolean update(Empleado empleado) {
+	public Boolean update(Empleado empleado) {//TODO: Revisar errores y controlar todas las excepciones posible (+Feedback al usuario)
         PreparedStatement stmt = null;
 
         try {
@@ -77,7 +75,7 @@ public class DaoEmpleado implements DaoInterface<Empleado>{
             if (!empleado.getNacido().toString().equals("")) {
                 sql += "nacido = ?, ";
             }
-            if (empleado.getDepartamento().getId().toString().equals("")) {
+            if (!empleado.getDepartamento().getId().toString().equals("")) {
                 sql += "departamento = ?, ";
             }
 

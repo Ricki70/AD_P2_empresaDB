@@ -3,6 +3,7 @@ package view;
 import java.util.List;
 import java.util.UUID;
 
+import constantes.color.Colores;
 import dao.DaoDepartamento;
 import io.IO;
 import model.Departamento;
@@ -14,8 +15,8 @@ public class MenuDepartamentos {
 
 		List<String> opciones = List.of(
 				"\n\n ======|MENU DEPARTAMENTOS|=====\n", 
-				"| 1.- Listar Departamentos	     |\n",
-				"| 2.- Agregar Departamento	     |\n", 
+				"| 1.- Listar Departamentos	|\n",
+				"| 2.- Agregar Departamento	|\n", 
 				"| 3.- Modificar Departamento    |\n",
 				"| 4.- Eliminar Departamento     |\n", 
 				"| 5.- Volver al menu principal  |\n",
@@ -61,7 +62,7 @@ public class MenuDepartamentos {
 		
 		// Comprobamos si se ha insertado el registro
 		boolean insertado = daoDepartamento.insert(departamento);
-		IO.print(insertado ? "Insertado correctamente" : "No se ha podido insertar el departamento");
+		IO.print(insertado ? "Insertado correctamente" : Colores.ROJO + "No se ha podido insertar el departamento" + Colores.RESET);
 	}
 
 	private static void updateDepartamento(DaoDepartamento daoDepartamento) {
@@ -71,11 +72,11 @@ public class MenuDepartamentos {
 		IO.print("Nombre ? ");
 		String nombre = IO.readString();
 		IO.print("Jefe ? ");
-		UUID jefe = IO.readUUID(); // TODO: arreglar que se puede meter UUID vacio
+		UUID jefe = IO.readUUIDOpcional(); 
 
 		// Creamos el departamento y lo actualizamos
 		Departamento departamento = new Departamento(id, nombre, new Empleado(jefe));
-		daoDepartamento.update(departamento);
+		IO.println(daoDepartamento.update(departamento) ? "Actualizado Correctamente" : Colores.ROJO + "Registro no encontrado o Informacion no valida" + Colores.RESET);
 	}
 
 	

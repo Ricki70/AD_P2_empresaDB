@@ -38,7 +38,7 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 	public Boolean insert(Departamento departamento) {
 		 try {
 //	        	conn = SingletonSQLite.getConnection();
-	            String sql = "INSERT INTO departamento (id, nombre, salario, nacido, departamento) VALUES (?, ?, ?, ?, ?)";
+	            String sql = "INSERT INTO departamento (id, nombre, jefe) VALUES (?, ?, ?)";
 	            PreparedStatement pstmt = MenuPrincipal.conn.prepareStatement(sql);
 	            
 	            pstmt.setString(1, departamento.getId().toString());
@@ -56,16 +56,16 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 	}
 	
 	@Override
-	public Boolean update(Departamento departamento) {
+	public Boolean update(Departamento departamento) { //TODO: Arreglar los mensajes de error clase (DaoDepartamento).
         PreparedStatement stmt = null;
 
         try {
             String sql = "UPDATE departamento SET ";
 
-            if (departamento.getNombre().equals("")) {
+            if (!departamento.getNombre().equals("")) {
                 sql += "nombre = ?, ";
             }
-            if (departamento.getJefe().getId().toString().equals("")) {
+            if (!departamento.getJefe().getId().toString().equals(new UUID(0, 0).toString())) {
                 sql += "jefe = ?, ";
             }
             
@@ -79,10 +79,9 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
             if (!departamento.getNombre().equals("")) {
                 stmt.setString(parameterIndex++, departamento.getNombre());
             }
-            if (!departamento.getJefe().getId().toString().equals("")) {
+            if (!departamento.getJefe().getId().toString().equals(new UUID(0, 0).toString())) {
                 stmt.setString(parameterIndex++, departamento.getJefe().getId().toString());
             }
-
             // Establece el ID del empleado a actualizar
             stmt.setString(parameterIndex, departamento.getId().toString());
 
@@ -91,7 +90,8 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
             return filasAfectadas > 0;
 
         } catch (SQLException e) {
-            // Maneja excepciones
+        	System.err.println("Empleado introducido no existe en la tabla empleado"); //Aqui entra siempre, de el error que de
+        	//Habria que afinar los errores para que solo salte el que deberia saltar en cada momento
         } 
         
         return false;

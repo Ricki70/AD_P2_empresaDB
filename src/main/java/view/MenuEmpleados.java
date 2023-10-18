@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import constantes.color.Colores;
 import dao.DaoEmpleado;
 import io.IO;
 import model.Departamento;
@@ -15,10 +16,10 @@ public class MenuEmpleados {
 
 		List<String> opciones = List.of(
 				"\n\n =======|MENU EMPLEADOS|========\n", 
-				"| 1.- Listar Empleados	         |\n",
-				"| 2.- Agregar Empleado	         |\n",
-				"| 3.- Modificar Empleado 	     |\n",
-				"| 4.- Eliminar Empleado	     |\n",
+				"| 1.- Listar Empleados	        |\n",
+				"| 2.- Agregar Empleado	        |\n",
+				"| 3.- Modificar Empleado 	|\n",
+				"| 4.- Eliminar Empleado	     	|\n",
 				"| 5.- Volver al menu principal  |\n", 
 				" ===============================\n");
 
@@ -64,9 +65,8 @@ public class MenuEmpleados {
 		// Creamos el empleado y lo insertamos
 		Empleado empleado = new Empleado(nombre, salario, nacido, new Departamento(departamento));
 		
-		// Comprobamos si se ha insertado el registro
-		boolean insertado = daoEmpleado.insert(empleado);
-		IO.print(insertado ? "Insertado correctamente" : "No se ha podido insertar el empleado");
+		// Comprobamos si se ha insertado el registro y damos feedback
+		IO.print(daoEmpleado.insert(empleado) ? "Insertado correctamente" : Colores.ROJO + "No se ha podido insertar el empleado" + Colores.RESET);
 	}
 
 	private static void updateEmpleado(DaoEmpleado daoEmpleado) {
@@ -80,11 +80,14 @@ public class MenuEmpleados {
 		IO.print("Fecha de nacimiento ? ");
 		LocalDate nacido = IO.readLocalDate(); // TODO: arreglar que se puede meter fecha de nacimiento vacía
 		IO.print("ID del departamento ? ");
-		UUID departamento = IO.readUUID(); // TODO: arreglar que se puede meter UUID vacio
+		UUID departamento = IO.readUUIDOpcional();
 
 		// Creamos el empleado y lo actualizamos
 		Empleado empleado = new Empleado(id, nombre, salario, nacido, new Departamento(departamento));
-		daoEmpleado.update(empleado);
+
+		//Comprobamos que se actualice y damos feedback
+		IO.println(daoEmpleado.update(empleado) ? "Actualizado Correctamente" : Colores.ROJO + "Registro no encontrado o Informacion no valida" + Colores.RESET);
+
 	}
 
 	private static void deleteEmpleado(DaoEmpleado daoEmpleado) {
