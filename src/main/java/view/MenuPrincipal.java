@@ -18,7 +18,7 @@ public class MenuPrincipal {
 				"| 3.- Salir			|\n",
 				" ===============================\n"		
 				);
-		
+
 		while (true) {
 			opciones.stream().forEach(System.out :: print);
 			System.out.print("\nIntroduce tu eleccion: ");

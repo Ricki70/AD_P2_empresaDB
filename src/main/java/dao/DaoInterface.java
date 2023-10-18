@@ -1,7 +1,5 @@
 package dao;
 
-import java.sql.ResultSet;
-
 /**
  * Interfaz con los métodos necesarios para realizar operaciones CRUD sobre la base de datos.
  * @param <T> tipo de objeto genérico (representa Empleado o Departamento)

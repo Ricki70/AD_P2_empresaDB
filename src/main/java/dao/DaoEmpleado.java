@@ -6,24 +6,38 @@ import java.sql.SQLException;
 import model.Empleado;
 import view.MenuPrincipal;
 
-public class DaoEmpleado {
+public class DaoEmpleado implements DaoInterface<Empleado>{
+	
+	@Override
+	public String listar() {
+		return null;
+		
+	}
 
-	public void update(Empleado empleado) {
+	@Override
+	public int insert(Empleado empleado) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public int update(Empleado empleado) {
+		int filasAfectadas = 0;
         PreparedStatement stmt = null;
 
         try {
             String sql = "UPDATE empleado SET ";
 
-            if (empleado.getNombre() != null) {
+            if (!empleado.getNombre().equals("")) {
                 sql += "nombre = ?, ";
             }
-            if (empleado.getSalario() != 0.0) {
+            if (empleado.getSalario() != null) {
                 sql += "salario = ?, ";
             }
-            if (empleado.getNacido() != null) {
+            if (!empleado.getNacido().toString().equals("")) {
                 sql += "nacido = ?, ";
             }
-            if (empleado.getDepartamento().getId().toString() != null) {
+            if (empleado.getDepartamento().getId().toString().equals("")) {
                 sql += "departamento = ?, ";
             }
 
@@ -37,7 +51,7 @@ public class DaoEmpleado {
             if (!empleado.getNombre().equals("")) {
                 stmt.setString(parameterIndex++, empleado.getNombre());
             }
-            if (empleado.getSalario() != 0.0) {
+            if (empleado.getSalario() != null) {
                 stmt.setDouble(parameterIndex++, empleado.getSalario());
             }
             if (!empleado.getNacido().toString().equals("")) {
@@ -51,12 +65,17 @@ public class DaoEmpleado {
             stmt.setString(parameterIndex, empleado.getId().toString());
 
             // Ejecuta la consulta SQL con los valores actualizados y el ID
-            stmt.executeUpdate();
+            filasAfectadas = stmt.executeUpdate();
 
         } catch (SQLException e) {
             // Maneja excepciones
-        } finally {
-            // Cierra la conexión y el PreparedStatement
         }
+		return filasAfectadas;
     }
+
+	@Override
+	public int delete(Empleado empleado) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

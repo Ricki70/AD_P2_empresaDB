@@ -3,25 +3,39 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import model.Empleado;
+import model.Departamento;
 import view.MenuPrincipal;
 
-public class DaoDepartamento {
+public class DaoDepartamento implements DaoInterface<Departamento>{
 	
-	public void update(Empleado empleado) {
+	@Override
+	public String listar() {
+		
+		return null;
+	}
+
+	@Override
+	public int insert(Departamento departamento) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public int update(Departamento departamento) {
+		
+		int filasAfectadas = 0;
         PreparedStatement stmt = null;
 
         try {
-            String sql = "UPDATE empleado SET ";
+            String sql = "UPDATE departamento SET ";
 
-            if (empleado.getNombre() != null) {
+            if (departamento.getNombre().equals("")) {
                 sql += "nombre = ?, ";
             }
-            if (empleado.getSalario() != 0.0) {
+            if (departamento.getJefe().getId().toString().equals("")) {
                 sql += "jefe = ?, ";
             }
             
-
             // Elimina la coma final y agrega la condición WHERE
             sql = sql.substring(0, sql.length() - 2) + " WHERE id = ?";
 
@@ -29,24 +43,30 @@ public class DaoDepartamento {
 
             int parameterIndex = 1;
 
-            if (!empleado.getNombre().equals("")) {
-                stmt.setString(parameterIndex++, empleado.getNombre());
+            if (!departamento.getNombre().equals("")) {
+                stmt.setString(parameterIndex++, departamento.getNombre());
             }
-            if (empleado.getSalario() != 0.0) {
-                stmt.setDouble(parameterIndex++, empleado.getSalario());
+            if (!departamento.getJefe().getId().toString().equals("")) {
+                stmt.setString(parameterIndex++, departamento.getJefe().getId().toString());
             }
 
             // Establece el ID del empleado a actualizar
-            stmt.setString(parameterIndex, empleado.getId().toString());
+            stmt.setString(parameterIndex, departamento.getId().toString());
 
             // Ejecuta la consulta SQL con los valores actualizados y el ID
-            stmt.executeUpdate();
+            filasAfectadas = stmt.executeUpdate();
 
         } catch (SQLException e) {
             // Maneja excepciones
-        } finally {
-            // Cierra la conexión y el PreparedStatement
-        }
+        } 
+        
+        return filasAfectadas;
     }
+
+	@Override
+	public int delete(Departamento t) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }
