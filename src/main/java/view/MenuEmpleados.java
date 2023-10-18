@@ -14,7 +14,7 @@ public class MenuEmpleados {
 		DaoEmpleado daoEmpleado = new DaoEmpleado();
 
 		List<String> opciones = List.of(
-				" =======|MENU EMPLEADOS|========\n", 
+				"\n\n =======|MENU EMPLEADOS|========\n", 
 				"| 1.- Listar Empleados	         |\n",
 				"| 2.- Agregar Empleado	         |\n",
 				"| 3.- Modificar Empleado 	     |\n",

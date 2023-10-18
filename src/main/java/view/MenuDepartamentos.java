@@ -13,7 +13,7 @@ public class MenuDepartamentos {
 		DaoDepartamento daoDepartamento = new DaoDepartamento();
 
 		List<String> opciones = List.of(
-				" ======|MENU DEPARTAMENTOS|=====\n", 
+				"\n\n ======|MENU DEPARTAMENTOS|=====\n", 
 				"| 1.- Listar Departamentos	     |\n",
 				"| 2.- Agregar Departamento	     |\n", 
 				"| 3.- Modificar Departamento    |\n",
