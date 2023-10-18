@@ -1,11 +1,9 @@
 package view;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 import dao.DaoDepartamento;
-import dao.DaoEmpleado;
 import io.IO;
 import model.Departamento;
 import model.Empleado;
@@ -16,12 +14,12 @@ public class MenuDepartamentos {
 
 		List<String> opciones = List.of(
 				" ======|MENU DEPARTAMENTOS|=====\n", 
-				"| 1.- Listar Departamentos	|\n",
-				"| 2.- Agregar Departamento	|\n", 
-				"| 3.- Modificar Departamento  |\n",
-				"| 4.- Eliminar Departamento   |\n", 
-				"| 5.- Volver al menu principal|\n",
-				"===============================\n");
+				"| 1.- Listar Departamentos	     |\n",
+				"| 2.- Agregar Departamento	     |\n", 
+				"| 3.- Modificar Departamento    |\n",
+				"| 4.- Eliminar Departamento     |\n", 
+				"| 5.- Volver al menu principal  |\n",
+				" ===============================\n");
 
 		while (true) {
 			opciones.stream().forEach(System.out::print);

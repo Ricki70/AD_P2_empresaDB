@@ -147,7 +147,7 @@ public class IO {
 			try {
 				String lectura = sc.nextLine().trim();
 				if(!lectura.isEmpty()) {
-					return Double.parseDouble(sc.nextLine());
+					return Double.parseDouble(lectura);
 				} else {
 					return null;
 				}

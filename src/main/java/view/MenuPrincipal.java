@@ -13,9 +13,9 @@ public class MenuPrincipal {
 	public static void main(String[] args) {
 		List<String> opciones = List.of( 
 				" =======|MENU PRINCIPAL|========\n",
-				"| 1.- Gestionar Departamentos	|\n", 
-				"| 2.- Gestionar Empleados	|\n", 
-				"| 3.- Salir			|\n",
+				"| 1.- Gestionar Departamentos	 |\n", 
+				"| 2.- Gestionar Empleados	     |\n", 
+				"| 3.- Salir			         |\n",
 				" ===============================\n"		
 				);
 

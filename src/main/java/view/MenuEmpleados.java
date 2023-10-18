@@ -13,9 +13,14 @@ public class MenuEmpleados {
 	public static void mostrarMenu() {
 		DaoEmpleado daoEmpleado = new DaoEmpleado();
 
-		List<String> opciones = List.of(" =======|MENU EMPLEADOS|========\n", "| 1.- Listar Empleados	|\n",
-				"| 2.- Agregar Empleado	|\n", "| 3.- Modificar Empleado 	|\n", "| 4.- Eliminar Empleado	|\n",
-				"| 5.- Volver al menu principal|\n", "===============================\n");
+		List<String> opciones = List.of(
+				" =======|MENU EMPLEADOS|========\n", 
+				"| 1.- Listar Empleados	         |\n",
+				"| 2.- Agregar Empleado	         |\n",
+				"| 3.- Modificar Empleado 	     |\n",
+				"| 4.- Eliminar Empleado	     |\n",
+				"| 5.- Volver al menu principal  |\n", 
+				" ===============================\n");
 
 		while (true) {
 			opciones.stream().forEach(System.out::print);
