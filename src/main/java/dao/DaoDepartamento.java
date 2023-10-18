@@ -16,7 +16,7 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 	public String listar() {
 		StringBuilder sb = new StringBuilder();
         try {
-            String sql = "SELECT * FROM empleado";
+            String sql = "SELECT * FROM departamento";
             Statement stmt = MenuPrincipal.conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
@@ -38,7 +38,7 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 	public Boolean insert(Departamento departamento) {
 		 try {
 //	        	conn = SingletonSQLite.getConnection();
-	            String sql = "INSERT INTO empleado (id, nombre, salario, nacido, departamento) VALUES (?, ?, ?, ?, ?)";
+	            String sql = "INSERT INTO departamento (id, nombre, salario, nacido, departamento) VALUES (?, ?, ?, ?, ?)";
 	            PreparedStatement pstmt = MenuPrincipal.conn.prepareStatement(sql);
 	            
 	            pstmt.setString(1, departamento.getId().toString());
