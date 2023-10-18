@@ -1,13 +1,18 @@
 package view;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import dao.DaoDepartamento;
+import dao.DaoEmpleado;
 import io.IO;
+import model.Departamento;
+import model.Empleado;
 
 public class MenuDepartamentos {
 	public static void mostrarMenu() {
-		DaoDepartamento departamento = new DaoDepartamento();
+		DaoDepartamento daoDepartamento = new DaoDepartamento();
 
 		List<String> opciones = List.of(
 				" ======|MENU DEPARTAMENTOS|=====\n", 
@@ -20,19 +25,19 @@ public class MenuDepartamentos {
 
 		while (true) {
 			opciones.stream().forEach(System.out::print);
-			System.out.print("\nIntroduce tu eleccion: ");
+			IO.print("\nIntroduce tu eleccion: ");
 			switch (IO.readInt()) {
 			case 1:
-				listarDepartamentos(departamento);
+				listarDepartamentos(daoDepartamento);
 				break;
 			case 2:
-				insertDepartamento(departamento);
+				insertDepartamento(daoDepartamento);
 				break;
 			case 3:
-				updateDepartamento(departamento);
+				updateDepartamento(daoDepartamento);
 				break;
 			case 4:
-				deleteDepartamento(departamento);
+				deleteDepartamento(daoDepartamento);
 				break;
 			case 5:
 				MenuPrincipal.main(null);
@@ -42,21 +47,41 @@ public class MenuDepartamentos {
 		}
 	}
 
-	private static void listarDepartamentos(DaoDepartamento departamento) {
-
+	private static void listarDepartamentos(DaoDepartamento daoDepartamento) {
+		IO.print(daoDepartamento.listar());
 	}
-	
-	private static void insertDepartamento(DaoDepartamento departamento) {
+
+	private static void insertDepartamento(DaoDepartamento daoDepartamento) {
+		// Obtenemos los datos del departamento que se quiere insertar
+		IO.print("Nombre ? ");
+		String nombre = IO.readStringNoEmpty();
+		IO.print("Jefe ? ");
+		UUID jefe = IO.readUUID(); 
+
+		// Creamos el departamento y lo insertamos
+		Departamento departamento = new Departamento(nombre, new Empleado(jefe));
 		
-
+		// Comprobamos si se ha insertado el registro
+		boolean insertado = daoDepartamento.insert(departamento);
+		IO.print(insertado ? "Insertado correctamente" : "No se ha podido insertar el departamento");
 	}
-	
-	private static void updateDepartamento(DaoDepartamento departamento) {
-		
 
+	private static void updateDepartamento(DaoDepartamento daoDepartamento) {
+		// Obtenemos los datos del departamento que se quiere modificar
+		IO.print("ID ? ");
+		UUID id = IO.readUUID();
+		IO.print("Nombre ? ");
+		String nombre = IO.readString();
+		IO.print("Jefe ? ");
+		UUID jefe = IO.readUUID(); // TODO: arreglar que se puede meter UUID vacio
+
+		// Creamos el departamento y lo actualizamos
+		Departamento departamento = new Departamento(id, nombre, new Empleado(jefe));
+		daoDepartamento.update(departamento);
 	}
+
 	
-	private static void deleteDepartamento(DaoDepartamento departamento) {
+	private static void deleteDepartamento(DaoDepartamento daoDepartamento) {
 		
 
 	}

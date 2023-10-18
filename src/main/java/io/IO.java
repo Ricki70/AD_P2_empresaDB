@@ -1,6 +1,9 @@
 package io;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.UUID;
 
 /**
  * <p>
@@ -25,6 +28,8 @@ import java.util.Scanner;
  * <li>char
  * <li>String (admite tira vacía)
  * <li>String (no admite tira vacía)
+ * <li>UUID
+ * <li>LocalDate
  * </ul>
  *
  */
@@ -201,6 +206,34 @@ public class IO {
 				System.err.print("ERROR: este campo es obligatorio ? ");
 			} else {
 				return lectura;
+			}
+		}
+	}
+	
+	/**
+	 * Lee un valor de tipo UUID
+	 * @return
+	 */
+	static public UUID readUUID() {
+		while (true) {
+			try {
+				return java.util.UUID.fromString(IO.readStringNoEmpty());
+			} catch (Exception e) {
+				System.err.print("ERROR: no es de tipo UUID [ej: " + new UUID(0, 0) + "] ? ");
+			}
+		}
+	}
+	
+	/**
+	 * Lee un valor de tipo LocalDate
+	 * @return
+	 */
+	static public LocalDate readLocalDate() {
+		while (true) {
+			try {
+				return LocalDate.parse(sc.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+			} catch (Exception e) {
+				System.err.print("ERROR: no es de tipo LocalDate [formato dd-mm-aaaa] ? ");
 			}
 		}
 	}
