@@ -4,12 +4,7 @@ import java.util.Scanner;
 
 /**
  * <p>
- * Clase estática para leer de teclado con comprobación de tipo de datos y
- * escribir en pantalla.
- * </p>
- * 
- * <p>
- * <b>USO EDUCATIVO</b>
+ * Clase estática para leer de teclado con comprobación de tipo de datos y escribir en pantalla.
  * </p>
  * 
  * <p>
@@ -29,11 +24,9 @@ import java.util.Scanner;
  * <li>boolean (true, false)
  * <li>char
  * <li>String (admite tira vacía)
+ * <li>String (no admite tira vacía)
  * </ul>
- * 
- * @author Amadeo
- * @version 1.0
- * @since 2018-07-01
+ *
  */
 public class IO {
 
@@ -49,8 +42,7 @@ public class IO {
 	/**
 	 * Muestra un objeto
 	 * 
-	 * @param o
-	 *            objeto
+	 * @param o objeto
 	 */
 	static public void print(Object o) {
 		System.out.print(o);
@@ -59,8 +51,7 @@ public class IO {
 	/**
 	 * Muestra un objeto y salta de l�nea
 	 * 
-	 * @param o
-	 *            objeto
+	 * @param o objeto
 	 */
 	static public void println(Object o) {
 		System.out.println(o);
@@ -146,10 +137,15 @@ public class IO {
 	 * 
 	 * @return
 	 */
-	static public double readDouble() {
+	static public Double readDouble() {
 		while (true) {
 			try {
-				return Double.parseDouble(sc.nextLine());
+				String lectura = sc.nextLine().trim();
+				if(!lectura.isEmpty()) {
+					return Double.parseDouble(sc.nextLine());
+				} else {
+					return null;
+				}
 			} catch (Exception e) {
 				System.err.print("ERROR: No es de tipo double ? ");
 			}
@@ -193,15 +189,19 @@ public class IO {
 	static public String readString() {
 		return sc.nextLine();
 	}
-
-	/*
-	 * Métodos para idioma español
-	 *
-	 * static public void escribir(Object o) { println(o); }
-	 * static public void mostrar(Object o) { println(o); }
-	 * static public int leerEntero() { return readInt(); }
-	 * static public double leerDecimal() { return readDouble(); }
-	 * static public char leerCaracter() { return readChar(); }
+	
+	/**
+	 * Lee un valor de tipo String sin admitir cadena vacía
+	 * @return
 	 */
-
+	static public String readStringNoEmpty() {
+		while (true) {
+			String lectura = sc.nextLine().trim();
+			if(lectura.isEmpty()) {
+				System.err.print("ERROR: este campo es obligatorio ? ");
+			} else {
+				return lectura;
+			}
+		}
+	}
 }
