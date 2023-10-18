@@ -1,8 +1,14 @@
 package dao;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
+import model.Departamento;
 import model.Empleado;
 import view.MenuPrincipal;
 
@@ -10,19 +16,53 @@ public class DaoEmpleado implements DaoInterface<Empleado>{
 	
 	@Override
 	public String listar() {
-		return null;
-		
+		StringBuilder sb = new StringBuilder();
+        try {
+            String sql = "SELECT * FROM empleado";
+            Statement stmt = MenuPrincipal.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                UUID uuid = UUID.fromString(rs.getString("id"));
+                String nombre = rs.getString("nombre");
+                Double salario = rs.getDouble("salario");
+                LocalDate nacido =  LocalDate.parse(rs.getString("nacido"), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                Departamento idDepartamento = new Departamento(UUID.fromString(rs.getString("departamento")));
+                sb.append(new Empleado(uuid, nombre, salario, nacido, idDepartamento).toString()).append("\n");
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
 	}
 
 	@Override
-	public int insert(Empleado empleado) {
-		// TODO Auto-generated method stub
-		return 0;
+	public Boolean insert(Empleado empleado) {
+		 try {
+//	        	conn = SingletonSQLite.getConnection();
+	            String sql = "INSERT INTO empleado (id, nombre, salario, nacido, departamento) VALUES (?, ?, ?, ?, ?)";
+	            PreparedStatement pstmt = MenuPrincipal.conn.prepareStatement(sql);
+	            
+	            pstmt.setString(1, empleado.getId().toString());
+	            pstmt.setString(2, empleado.getNombre());
+	            pstmt.setDouble(3, empleado.getSalario());
+	            pstmt.setString(4, empleado.getNacido().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+	            pstmt.setString(5, empleado.getDepartamento().getId().toString());
+
+	            int affectedRows = pstmt.executeUpdate();
+//	            conn.close();
+	            pstmt.close();
+	            return affectedRows > 0;
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            return false;
+	        }
 	}
 	
 	@Override
-	public int update(Empleado empleado) {
-		int filasAfectadas = 0;
+	public Boolean update(Empleado empleado) {
         PreparedStatement stmt = null;
 
         try {
@@ -65,17 +105,18 @@ public class DaoEmpleado implements DaoInterface<Empleado>{
             stmt.setString(parameterIndex, empleado.getId().toString());
 
             // Ejecuta la consulta SQL con los valores actualizados y el ID
-            filasAfectadas = stmt.executeUpdate();
+            int filasAfectadas = stmt.executeUpdate();
+            return filasAfectadas > 0;
 
         } catch (SQLException e) {
             // Maneja excepciones
         }
-		return filasAfectadas;
+		return false;
     }
 
 	@Override
-	public int delete(Empleado empleado) {
+	public Boolean delete(Empleado empleado) {
 		// TODO Auto-generated method stub
-		return 0;
+		return false;
 	}
 }

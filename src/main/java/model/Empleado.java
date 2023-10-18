@@ -22,4 +22,8 @@ public class Empleado {
 		setNacido(nacido);
 		setDepartamento(departamento);
 	}
+	
+		public Empleado(UUID id) {
+			setId(id);
+		}
 }

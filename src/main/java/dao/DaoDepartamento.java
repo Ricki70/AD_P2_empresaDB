@@ -1,29 +1,62 @@
 package dao;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.UUID;
 
 import model.Departamento;
+import model.Empleado;
 import view.MenuPrincipal;
 
 public class DaoDepartamento implements DaoInterface<Departamento>{
 	
 	@Override
 	public String listar() {
-		
-		return null;
+		StringBuilder sb = new StringBuilder();
+        try {
+            String sql = "SELECT * FROM empleado";
+            Statement stmt = MenuPrincipal.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                UUID uuid = UUID.fromString(rs.getString("id"));
+                String nombre = rs.getString("nombre");
+                Empleado idEmpleado = new Empleado(UUID.fromString(rs.getString("jefe")));
+                sb.append(new Departamento(uuid, nombre, idEmpleado).toString()).append("\n");
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
 	}
 
 	@Override
-	public int insert(Departamento departamento) {
-		// TODO Auto-generated method stub
-		return 0;
+	public Boolean insert(Departamento departamento) {
+		 try {
+//	        	conn = SingletonSQLite.getConnection();
+	            String sql = "INSERT INTO empleado (id, nombre, salario, nacido, departamento) VALUES (?, ?, ?, ?, ?)";
+	            PreparedStatement pstmt = MenuPrincipal.conn.prepareStatement(sql);
+	            
+	            pstmt.setString(1, departamento.getId().toString());
+	            pstmt.setString(2, departamento.getNombre());
+	            pstmt.setString(3, departamento.getJefe().getId().toString());
+
+	            int affectedRows = pstmt.executeUpdate();
+//	            conn.close();
+	            pstmt.close();
+	            return affectedRows > 0;
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            return false;
+	        }
 	}
 	
 	@Override
-	public int update(Departamento departamento) {
-		
-		int filasAfectadas = 0;
+	public Boolean update(Departamento departamento) {
         PreparedStatement stmt = null;
 
         try {
@@ -54,19 +87,20 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
             stmt.setString(parameterIndex, departamento.getId().toString());
 
             // Ejecuta la consulta SQL con los valores actualizados y el ID
-            filasAfectadas = stmt.executeUpdate();
+            int filasAfectadas = stmt.executeUpdate();
+            return filasAfectadas > 0;
 
         } catch (SQLException e) {
             // Maneja excepciones
         } 
         
-        return filasAfectadas;
+        return false;
     }
 
 	@Override
-	public int delete(Departamento t) {
+	public Boolean delete(Departamento t) {
 		// TODO Auto-generated method stub
-		return 0;
+		return false;
 	}
 
 }
