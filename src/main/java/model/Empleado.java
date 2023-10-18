@@ -12,14 +12,14 @@ public class Empleado {
 	private UUID id;
 	private String nombre;
 	private Double salario;
-	private LocalDate fecha_nacimiento;
+	private LocalDate nacido;
 	private Departamento departamento;
 
-	public Empleado(String nombre, Double salario, LocalDate fecha_nacimiento, Departamento departamento) {
+	public Empleado(String nombre, Double salario, LocalDate nacido, Departamento departamento) {
 		setId(UUID.randomUUID());
 		setNombre(nombre);
 		setSalario(salario);
-		setFecha_nacimiento(fecha_nacimiento);
+		setNacido(nacido);
 		setDepartamento(departamento);
 	}
 }

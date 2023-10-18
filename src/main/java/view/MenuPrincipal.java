@@ -1,5 +1,6 @@
 package view;
 
+import java.sql.Connection;
 import java.util.List;
 
 import dao.SingletonConexion;
@@ -7,6 +8,8 @@ import io.IO;
 
 public class MenuPrincipal {
 
+	public static Connection conn = SingletonConexion.getConnection();
+	
 	public static void main(String[] args) {
 		List<String> opciones = List.of( 
 				" =======|MENU PRINCIPAL|========\n",
@@ -16,17 +19,15 @@ public class MenuPrincipal {
 				" ===============================\n"		
 				);
 		
-		SingletonConexion.getConnection();
-		
 		while (true) {
 			opciones.stream().forEach(System.out :: print);
 			System.out.print("\nIntroduce tu eleccion: ");
 			switch (IO.readInt()) {
 				case 1:  // menú departamentos
-					MenuGestionDepartamentos.mostrarMenu();
+					MenuDepartamentos.mostrarMenu();
 					break;
 				case 2:  // menú empleados
-					MenuGestionEmpleados.mostrarMenu();
+					MenuEmpleados.mostrarMenu();
 					break;
 				case 3:  // salir del menú
 					System.out.println("\nHas salido del menú");

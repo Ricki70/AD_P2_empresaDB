@@ -93,7 +93,7 @@ public class SingletonConexion {
                     + "id " + tipo + " PRIMARY KEY,"
                     + "nombre " + tipo + ","
                     + "salario DOUBLE,"
-                    + "nacido DATE,"
+                    + "nacido " + tipo + ","
                     + "departamento " + tipo + ")");
             
             // Creamos las foreign key de las tablas

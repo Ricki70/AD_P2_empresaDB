@@ -2,12 +2,12 @@ package view;
 
 import java.util.List;
 
-import dao.GestionEmpleados;
+import dao.DaoEmpleado;
 import io.IO;
 
-public class MenuGestionEmpleados {
+public class MenuEmpleados {
 	public static void mostrarMenu() {
-		GestionEmpleados gEmpleado = new GestionEmpleados();
+		DaoEmpleado empleado = new DaoEmpleado();
 		
 		List<String> opciones = List.of( 
 				" =======|MENU EMPLEADOS|========\n",
@@ -24,16 +24,16 @@ public class MenuGestionEmpleados {
 			System.out.print("\nIntroduce tu eleccion: ");
 			switch (IO.readInt()) {
 				case 1:
-					
+					listarEmpleados(empleado);
 					break;
 				case 2:
-					
+					insertEmpleado(empleado);
 					break;
 				case 3:
-					
+					updateEmpleado(empleado);
 					break;
 				case 4:
-					
+					deleteEmpleado(empleado);
 					break;
 				case 5:
 					MenuPrincipal.main(null);
@@ -42,4 +42,23 @@ public class MenuGestionEmpleados {
 			}
 		}
     }
+
+	private static void listarEmpleados(DaoEmpleado empleado) {
+		
+	}
+
+	private static void insertEmpleado(DaoEmpleado empleado) {
+		
+		
+	}
+
+	private static void updateEmpleado(DaoEmpleado empleado) {
+		
+		
+	}
+	
+	private static void deleteEmpleado(DaoEmpleado empleado) {
+		
+		
+	}
 }
