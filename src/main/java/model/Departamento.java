@@ -17,4 +17,8 @@ public class Departamento {
 		setNombre(nombre);
 		setJefe(jefe);
 	}
+	
+	public Departamento(UUID id) {
+		setId(id);
+	}
 }
