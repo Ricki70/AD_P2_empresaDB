@@ -278,11 +278,7 @@ public class IO {
 		while (true) {
 			try {
 				String lectura = IO.readStringOptional();
-				if (lectura.isEmpty()) {
-					return null;
-				}else {
-					return LocalDate.parse(lectura, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-				}
+				return (lectura.equals("null") || lectura.isEmpty()) ? null : LocalDate.parse(lectura, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 			} catch (Exception e) {
 				System.err.print("ERROR: no es de tipo LocalDate [formato dd-mm-aaaa] ? ");
 			}

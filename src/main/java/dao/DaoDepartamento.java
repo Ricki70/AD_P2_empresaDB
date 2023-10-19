@@ -100,7 +100,7 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 
 	@Override
 	public Boolean delete(Departamento t) {
-		// TODO Auto-generated method stub
+		//TODO: Programar Metodo Eliminar
 		return false;
 	}
 

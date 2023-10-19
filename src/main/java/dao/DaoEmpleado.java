@@ -13,15 +13,15 @@ import model.Empleado;
 import view.MenuPrincipal;
 
 public class DaoEmpleado implements DaoInterface<Empleado>{
-	
+	//TODO: Revisar todos los posibles fallos (En principio estan todos controlamos pero ya nos conocemos)
 	@Override
-	public String listar() {//TODO: Revisar la fecha, da error SOLO en la segunda iteracion
+	public String listar() {
 		StringBuffer sb = new StringBuffer();
         try {
-            String sql = "SELECT * FROM empleado";
+            String sql = "SELECT * FROM empleado"; //TODO:Completar query para que devuelva tambien el nombre asociado al ID del departamento
             Statement stmt = MenuPrincipal.conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-            String format = "[ %-36s ][ %-25s ][ %-8s ][ %-10s ][ %-30s ]%n";
+            String format = "%n[ %-36s ][ %-25s ][ %-8s ][ %-10s ][ %-30s ]%n";
             sb.append(String.format(format, "ID", "NOMBRE", "SALARIO", "NACIDO", "EMPLEADO"));
             while (rs.next()) {
                 UUID uuid = UUID.fromString(rs.getString("id"));
@@ -62,48 +62,33 @@ public class DaoEmpleado implements DaoInterface<Empleado>{
 	}
 	
 	@Override
-	public Boolean update(Empleado empleado) {//TODO: Revisar errores y controlar todas las excepciones posible (+Feedback al usuario)
+	public Boolean update(Empleado empleado) {
         PreparedStatement stmt = null;
 
         try {
             StringBuffer sql = new StringBuffer();
             sql.append("UPDATE empleado SET ");
 
-            if (!empleado.getNombre().equals("")) {
-            	sql.append("nombre = ?, ");
-            }
-            if (empleado.getSalario() != null) {
-            	sql.append("salario = ?, ");
-            }
-            if (!empleado.getNacido().toString().equals("")) {
-            	sql.append("nacido = ?, ");
-            }
-            if (!empleado.getDepartamento().getId().toString().equals("")) {
-            	sql.append("departamento = ?, ");
-            }
-
+            if (!empleado.getNombre().equals("")) sql.append("nombre = ?, "); 
+            if (empleado.getSalario() != null) sql.append("salario = ?, ");
+            if (empleado.getNacido() != null) sql.append("nacido = ?, ");            
+            if (empleado.getDepartamento().getId() != null)sql.append("departamento = ?, ");
+            
             // Elimina la coma final y agrega la condición WHERE
-            sql.substring(0, sql.length() - 2);
+            int length = sql.length();
+            if (sql.charAt(length - 2) == ',') sql.delete(length - 2, length);
+            
             sql.append(" WHERE id = ?");
 
             stmt = MenuPrincipal.conn.prepareStatement(sql.toString());
 
             // Asignamos los parámetros de la consulta
             int parameterIndex = 1;
-
-            if (!empleado.getNombre().equals("")) {
-                stmt.setString(parameterIndex++, empleado.getNombre());
-            }
-            if (empleado.getSalario() != null) {
-                stmt.setDouble(parameterIndex++, empleado.getSalario());
-            }
-            if (!empleado.getNacido().toString().equals("")) {
-                stmt.setString(parameterIndex++, empleado.getNacido().toString());
-            }
-            if (!empleado.getDepartamento().getId().toString().equals("")) {
-                stmt.setString(parameterIndex++, empleado.getDepartamento().getId().toString());
-            }
-
+            if (!empleado.getNombre().equals("")) stmt.setString(parameterIndex++, empleado.getNombre());           
+            if (empleado.getSalario() != null) stmt.setDouble(parameterIndex++, empleado.getSalario());          
+            if (empleado.getNacido() != null) stmt.setString(parameterIndex++, empleado.getNacido().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));      
+            if (empleado.getDepartamento().getId() != null) stmt.setString(parameterIndex++, empleado.getDepartamento().getId().toString());
+            
             // Establece el ID del empleado a actualizar
             stmt.setString(parameterIndex, empleado.getId().toString());
 
@@ -112,14 +97,13 @@ public class DaoEmpleado implements DaoInterface<Empleado>{
             return filasAfectadas > 0;
 
         } catch (SQLException e) {
-            // Maneja excepciones
         }
 		return false;
     }
 
 	@Override
 	public Boolean delete(Empleado empleado) {
-		// TODO Auto-generated method stub
+		//TODO:Programar metodo eliminar empleado
 		return false;
 	}
 }

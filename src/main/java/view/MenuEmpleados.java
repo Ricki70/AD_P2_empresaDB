@@ -15,7 +15,7 @@ public class MenuEmpleados {
 		DaoEmpleado daoEmpleado = new DaoEmpleado();
 
 		List<String> opciones = List.of(
-				"\n\n =======|MENU EMPLEADOS|========\n", 
+				"\n =======|MENU EMPLEADOS|========\n", 
 				"| 1.- Listar Empleados	        |\n",
 				"| 2.- Agregar Empleado	        |\n",
 				"| 3.- Modificar Empleado 	|\n",
@@ -76,7 +76,7 @@ public class MenuEmpleados {
 		IO.print("Nombre ? ");
 		String nombre = IO.readStringOptional();
 		IO.print("Salario ? ");
-		Double salario = IO.readDouble();
+		Double salario = IO.readDoubleOptional();
 		IO.print("Fecha de nacimiento ? ");
 		LocalDate nacido = IO.readLocalDateOptional();
 		IO.print("ID del departamento ? ");
@@ -86,11 +86,19 @@ public class MenuEmpleados {
 		Empleado empleado = new Empleado(id, nombre, salario, nacido, new Departamento(departamento));
 
 		//Comprobamos que se actualice y damos feedback
-		IO.println(daoEmpleado.update(empleado) ? "Actualizado Correctamente" : Colores.ROJO + "Registro no encontrado o Informacion no valida" + Colores.RESET);
-
+		IO.println(daoEmpleado.update(empleado) ? 
+				"\nActualizado Correctamente" 
+				: 
+				Colores.ROJO + 
+				"\nRegistro no encontrado o Informacion no valida\n"
+				+ "Asegurese de:\n"
+				+ "- Haber rellenado almenos 1 campo\n"
+				+ "- Que el ID del empleado a modificar exista en la tabla empleado\n"
+				+ "- Que el ID del departamento Exista en la tabla departamento" 
+				+ Colores.RESET);
 	}
 
 	private static void deleteEmpleado(DaoEmpleado daoEmpleado) {
-
+		//TODO:Programar llamada a metodo eliminar empleado
 	}
 }
