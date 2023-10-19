@@ -21,4 +21,9 @@ public class Departamento {
 	public Departamento(UUID id) {
 		setId(id);
 	}
+	
+	@Override
+	public String toString() {
+		return this.id + " | " + this.nombre + " | Jefe: " + this.jefe.getNombre() + " (" + this.jefe.getId() + ")"; 
+	}
 }

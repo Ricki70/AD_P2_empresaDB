@@ -16,7 +16,7 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 	public String listar() {
 		StringBuffer sb = new StringBuffer();
         try {
-            String sql = "SELECT * FROM departamento";
+            String sql = "SELECT departamento.id, departamento.nombre, empleado.id, empleado.nombre FROM departamento INNER JOIN "; // TODO COMPLETAR QUERY
             Statement stmt = MenuPrincipal.conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
