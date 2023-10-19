@@ -26,10 +26,12 @@ import java.util.UUID;
  * <li>double
  * <li>boolean (true, false)
  * <li>char
- * <li>String (admite tira vacía)
- * <li>String (no admite tira vacía)
+ * <li>String (admite cadena vacía)
+ * <li>String (no admite cadena vacía)
  * <li>UUID
+ * <li>UUID (opcional)   
  * <li>LocalDate
+ * <li>LocalDate (opcional)
  * </ul>
  *
  */
@@ -54,7 +56,7 @@ public class IO {
 	}
 
 	/**
-	 * Muestra un objeto y salta de l�nea
+	 * Muestra un objeto y salta de línea
 	 * 
 	 * @param o objeto
 	 */
@@ -145,11 +147,26 @@ public class IO {
 	static public Double readDouble() {
 		while (true) {
 			try {
-				String lectura = sc.nextLine().trim();
-				if(!lectura.isEmpty()) {
-					return Double.parseDouble(lectura);
-				} else {
+				return Double.parseDouble(IO.readString());
+			} catch (Exception e) {
+				System.err.print("ERROR: No es de tipo double ? ");
+			}
+		}
+	}
+	
+	/**
+	 * Lee un valor de tipo double que puede ser opcional
+	 * 
+	 * @return
+	 */
+	static public Double readDoubleOptional() {
+		while (true) {
+			try {
+				String lectura = IO.readStringOptional();
+				if(lectura.isEmpty()) {
 					return null;
+				} else {
+					return Double.parseDouble(lectura);
 				}
 			} catch (Exception e) {
 				System.err.print("ERROR: No es de tipo double ? ");
@@ -185,21 +202,12 @@ public class IO {
 			System.err.print("ERROR: No es de tipo char ? ");
 		}
 	}
-
+	
 	/**
-	 * Lee un valor de tipo String
-	 * 
+	 * Lee un valor de tipo String (no admite cadena vacía)
 	 * @return
 	 */
 	static public String readString() {
-		return sc.nextLine();
-	}
-	
-	/**
-	 * Lee un valor de tipo String sin admitir cadena vacía
-	 * @return
-	 */
-	static public String readStringNoEmpty() {
 		while (true) {
 			String lectura = sc.nextLine().trim();
 			if(lectura.isEmpty()) {
@@ -211,27 +219,40 @@ public class IO {
 	}
 	
 	/**
+	 * Lee un valor de tipo String (admite cadena vacía)
+	 * 
+	 * @return
+	 */
+	static public String readStringOptional() {
+		return sc.nextLine().trim();
+	}
+	
+	/**
 	 * Lee un valor de tipo UUID
 	 * @return
 	 */
 	static public UUID readUUID() {
 		while (true) {
 			try {
-				return java.util.UUID.fromString(IO.readStringNoEmpty());
+				return java.util.UUID.fromString(IO.readString());
 			} catch (Exception e) {
 				System.err.print("ERROR: no es de tipo UUID [ej: " + new UUID(0, 0) + "] ? ");
 			}
 		}
 	}
 	
-	static public UUID readUUIDOpcional() {
+	/**
+	 * Lee un valor de tipo UUID que puede ser opcional
+	 * @return
+	 */
+	static public UUID readUUIDOptional() {
 		while (true) {
 			try {
-				String lectura = IO.readString();
+				String lectura = IO.readStringOptional();
 				if (lectura.isEmpty()) {
 					return new UUID(0, 0);
 				}else {
-					return java.util.UUID.fromString(IO.readString());	
+					return java.util.UUID.fromString(IO.readStringOptional());	
 				}
 			} catch (Exception e) {
 				System.err.print("ERROR: no es de tipo UUID [ej: " + new UUID(0, 0) + "] ? ");
@@ -246,7 +267,26 @@ public class IO {
 	static public LocalDate readLocalDate() {
 		while (true) {
 			try {
-				return LocalDate.parse(sc.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				return LocalDate.parse(IO.readString(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+			} catch (Exception e) {
+				System.err.print("ERROR: no es de tipo LocalDate [formato dd-mm-aaaa] ? ");
+			}
+		}
+	}
+	
+	/**
+	 * Lee un valor de tipo LocalDate que puede ser opcional
+	 * @return
+	 */
+	static public LocalDate readLocalDateOptional() {
+		while (true) {
+			try {
+				String lectura = IO.readStringOptional();
+				if (lectura.isEmpty()) {
+					return null;
+				}else {
+					return LocalDate.parse(lectura, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				}
 			} catch (Exception e) {
 				System.err.print("ERROR: no es de tipo LocalDate [formato dd-mm-aaaa] ? ");
 			}

@@ -54,7 +54,7 @@ public class MenuEmpleados {
 	private static void insertEmpleado(DaoEmpleado daoEmpleado) {
 		// Obtenemos los datos del empleado que se quiere insertar
 		IO.print("Nombre ? ");
-		String nombre = IO.readStringNoEmpty();
+		String nombre = IO.readString();
 		IO.print("Salario ? ");
 		Double salario = IO.readDouble();
 		IO.print("Fecha de nacimiento ? ");
@@ -72,15 +72,15 @@ public class MenuEmpleados {
 	private static void updateEmpleado(DaoEmpleado daoEmpleado) {
 		// Obtenemos los datos del empleado que se quiere modificar
 		IO.print("ID ? ");
-		UUID id = IO.readUUID();
+		UUID id = IO.readUUID();  
 		IO.print("Nombre ? ");
-		String nombre = IO.readString();
+		String nombre = IO.readStringOptional();
 		IO.print("Salario ? ");
 		Double salario = IO.readDouble();
 		IO.print("Fecha de nacimiento ? ");
-		LocalDate nacido = IO.readLocalDate(); // TODO: arreglar que se puede meter fecha de nacimiento vacía
+		LocalDate nacido = IO.readLocalDateOptional();
 		IO.print("ID del departamento ? ");
-		UUID departamento = IO.readUUIDOpcional();
+		UUID departamento = IO.readUUIDOptional();  
 
 		// Creamos el empleado y lo actualizamos
 		Empleado empleado = new Empleado(id, nombre, salario, nacido, new Departamento(departamento));
