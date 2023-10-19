@@ -249,11 +249,7 @@ public class IO {
 		while (true) {
 			try {
 				String lectura = IO.readStringOptional();
-				if (lectura.isEmpty()) {
-					return new UUID(0, 0);
-				}else {
-					return java.util.UUID.fromString(IO.readStringOptional());	
-				}
+				return (lectura.equals("null") || lectura.isEmpty()) ? null : java.util.UUID.fromString(lectura);
 			} catch (Exception e) {
 				System.err.print("ERROR: no es de tipo UUID [ej: " + new UUID(0, 0) + "] ? ");
 			}

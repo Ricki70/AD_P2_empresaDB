@@ -21,13 +21,14 @@ public class DaoEmpleado implements DaoInterface<Empleado>{
             String sql = "SELECT * FROM empleado";
             Statement stmt = MenuPrincipal.conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-
+            String format = "[ %-36s ][ %-25s ][ %-8s ][ %-10s ][ %-30s ]%n";
+            sb.append(String.format(format, "ID", "NOMBRE", "SALARIO", "NACIDO", "EMPLEADO"));
             while (rs.next()) {
                 UUID uuid = UUID.fromString(rs.getString("id"));
                 String nombre = rs.getString("nombre");
                 Double salario = rs.getDouble("salario");
                 LocalDate nacido =  LocalDate.parse(rs.getString("nacido"), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-                Departamento idDepartamento = new Departamento(UUID.fromString(rs.getString("departamento")));
+                Departamento idDepartamento = (rs.getString("departamento") == null) ? null : new Departamento(UUID.fromString(rs.getString("departamento")));
                 sb.append(new Empleado(uuid, nombre, salario, nacido, idDepartamento).toString()).append("\n");
             }
             rs.close();
@@ -48,7 +49,8 @@ public class DaoEmpleado implements DaoInterface<Empleado>{
 	            pstmt.setString(2, empleado.getNombre());
 	            pstmt.setDouble(3, empleado.getSalario());
 	            pstmt.setString(4, empleado.getNacido().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-	            pstmt.setString(5, empleado.getDepartamento().getId().toString());
+	            String departamentoID = (empleado.getDepartamento().getId() == null) ? null : empleado.getDepartamento().getId().toString();
+	            pstmt.setString(5, departamentoID);
 
 	            int affectedRows = pstmt.executeUpdate();
 	            pstmt.close();

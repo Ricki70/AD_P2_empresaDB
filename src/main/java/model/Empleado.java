@@ -27,5 +27,15 @@ public class Empleado {
 		setId(id);
 	}
 	
-	
+	@Override
+	public String toString() {
+//		PRIMER INTENTO DE ESTRUCTURAR LOS DATOS
+//		String objDepartamento = (this.departamento == null) ? " | NULL | " : " | " + this.nacido + " | " + this.departamento.getNombre() + " (" + this.departamento.getId().toString() + ") ";
+//		return this.id + " | " + this.nombre + " | " + this.salario + objDepartamento; 
+		
+		String format = "[ %-36s ][ %-25s ][ %-8s ][ %-10s ][ %-30s ]%n";
+	    String departamentoStr = (this.departamento != null) ?  " ][ " + this.departamento.getNombre() + " (" + this.departamento.getId().toString() + ")" : "NULL";
+	    
+	    return String.format(format, this.id.toString(), this.nombre, this.salario.toString(), this.nacido.toString(), departamentoStr);
+	}
 }

@@ -60,7 +60,7 @@ public class MenuEmpleados {
 		IO.print("Fecha de nacimiento ? ");
 		LocalDate nacido = IO.readLocalDate(); 
 		IO.print("ID del departamento ? ");
-		UUID departamento = IO.readUUID(); 
+		UUID departamento = IO.readUUIDOptional(); 
 
 		// Creamos el empleado y lo insertamos
 		Empleado empleado = new Empleado(nombre, salario, nacido, new Departamento(departamento));
