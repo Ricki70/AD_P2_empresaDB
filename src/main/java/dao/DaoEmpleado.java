@@ -16,7 +16,7 @@ public class DaoEmpleado implements DaoInterface<Empleado>{
 	
 	@Override
 	public String listar() {//TODO: Revisar la fecha, da error SOLO en la segunda iteracion
-		StringBuilder sb = new StringBuilder();
+		StringBuffer sb = new StringBuffer();
         try {
             String sql = "SELECT * FROM empleado";
             Statement stmt = MenuPrincipal.conn.createStatement();
@@ -64,26 +64,29 @@ public class DaoEmpleado implements DaoInterface<Empleado>{
         PreparedStatement stmt = null;
 
         try {
-            String sql = "UPDATE empleado SET ";
+            StringBuffer sql = new StringBuffer();
+            sql.append("UPDATE empleado SET ");
 
             if (!empleado.getNombre().equals("")) {
-                sql += "nombre = ?, ";
+            	sql.append("nombre = ?, ");
             }
             if (empleado.getSalario() != null) {
-                sql += "salario = ?, ";
+            	sql.append("salario = ?, ");
             }
             if (!empleado.getNacido().toString().equals("")) {
-                sql += "nacido = ?, ";
+            	sql.append("nacido = ?, ");
             }
             if (!empleado.getDepartamento().getId().toString().equals("")) {
-                sql += "departamento = ?, ";
+            	sql.append("departamento = ?, ");
             }
 
             // Elimina la coma final y agrega la condición WHERE
-            sql = sql.substring(0, sql.length() - 2) + " WHERE id = ?";
+            sql.substring(0, sql.length() - 2);
+            sql.append(" WHERE id = ?");
 
-            stmt = MenuPrincipal.conn.prepareStatement(sql);
+            stmt = MenuPrincipal.conn.prepareStatement(sql.toString());
 
+            // Asignamos los parámetros de la consulta
             int parameterIndex = 1;
 
             if (!empleado.getNombre().equals("")) {

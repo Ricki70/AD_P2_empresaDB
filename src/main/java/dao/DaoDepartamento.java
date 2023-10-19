@@ -14,7 +14,7 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 	
 	@Override
 	public String listar() {
-		StringBuilder sb = new StringBuilder();
+		StringBuffer sb = new StringBuffer();
         try {
             String sql = "SELECT * FROM departamento";
             Statement stmt = MenuPrincipal.conn.createStatement();
@@ -37,7 +37,6 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 	@Override
 	public Boolean insert(Departamento departamento) {
 		 try {
-//	        	conn = SingletonSQLite.getConnection();
 	            String sql = "INSERT INTO departamento (id, nombre, jefe) VALUES (?, ?, ?)";
 	            PreparedStatement pstmt = MenuPrincipal.conn.prepareStatement(sql);
 	            
@@ -46,7 +45,6 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 	            pstmt.setString(3, departamento.getJefe().getId().toString());
 
 	            int affectedRows = pstmt.executeUpdate();
-//	            conn.close();
 	            pstmt.close();
 	            return affectedRows > 0;
 	        } catch (SQLException e) {
@@ -60,20 +58,23 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
         PreparedStatement stmt = null;
 
         try {
-            String sql = "UPDATE departamento SET ";
+            StringBuffer sql = new StringBuffer();
+            sql.append("UPDATE departamento SET ");
 
             if (!departamento.getNombre().equals("")) {
-                sql += "nombre = ?, ";
+            	sql.append("nombre = ?, ");
             }
             if (!departamento.getJefe().getId().toString().equals(new UUID(0, 0).toString())) {
-                sql += "jefe = ?, ";
+            	sql.append("jefe = ?, ");
             }
             
             // Elimina la coma final y agrega la condición WHERE
-            sql = sql.substring(0, sql.length() - 2) + " WHERE id = ?";
+            sql.substring(0, sql.length() - 2);
+            sql.append(" WHERE id = ?");
 
-            stmt = MenuPrincipal.conn.prepareStatement(sql);
+            stmt = MenuPrincipal.conn.prepareStatement(sql.toString());
 
+            // Asignamos los parámetros de la consulta
             int parameterIndex = 1;
 
             if (!departamento.getNombre().equals("")) {
