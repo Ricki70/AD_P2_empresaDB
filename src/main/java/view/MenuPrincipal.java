@@ -30,11 +30,11 @@ public class MenuPrincipal {
 					MenuEmpleados.mostrarMenu();
 					break;
 				case 3:  // salir del menú
-					System.out.println("\nHas salido del menú");
+					IO.println("\nHas salido del menú");
 					SingletonConexion.closeConnection();
 					return;
 				default:
-					System.out.println("Opción no válida");
+					IO.println("Opción no válida");
 			}
 		}
 
