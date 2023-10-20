@@ -163,11 +163,7 @@ public class IO {
 		while (true) {
 			try {
 				String lectura = IO.readStringOptional();
-				if(lectura.isEmpty()) {
-					return null;
-				} else {
-					return Double.parseDouble(lectura);
-				}
+				return (lectura.equals("null") || lectura.isEmpty()) ? null : Double.parseDouble(lectura);
 			} catch (Exception e) {
 				System.err.print("ERROR: No es de tipo double ? ");
 			}
