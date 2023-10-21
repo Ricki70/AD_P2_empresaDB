@@ -81,7 +81,13 @@ public class MenuDepartamentos {
 
 	
 	private static void deleteDepartamento(DaoDepartamento daoDepartamento) {
-		
+		// Obtenemos los datos del departamento que se quiere modificar
+				IO.print("ID ? ");
+				UUID id = IO.readUUID(); 
+				
+				// Creamos el departamento y lo actualizamos
+				Departamento departamento = new Departamento(id);
+				IO.println(daoDepartamento.delete(departamento) ? "Eliminado Correctamente" : Colores.ROJO + "Registro no encontrado o Informacion no valida" + Colores.RESET);
 
 	}
 }

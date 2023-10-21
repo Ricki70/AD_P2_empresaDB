@@ -10,7 +10,7 @@ public class MenuPrincipal {
 
 	public static Connection conn = SingletonConexion.getConnection();
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) {	
 		List<String> opciones = List.of( 
 				" =======|MENU PRINCIPAL|========\n",
 				"| 1.- Gestionar Departamentos	 |\n", 

@@ -79,7 +79,6 @@ public class SingletonConexion {
     private void crearTablas() {
     	try {
             Statement statement = connection.createStatement();
-            
             String tipo = (name.equals("MariaDB")) ? "VARCHAR(50)" : "TEXT";
 
             // Creamos la tabla departamento

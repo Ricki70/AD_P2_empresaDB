@@ -85,7 +85,7 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 	}
 	
 	@Override
-	public Boolean update(Departamento departamento) { //TODO: Arreglar los mensajes de error clase (DaoDepartamento).
+	public Boolean update(Departamento departamento) { //TODO: Revisar que al añadir un Jefe, si este existe en la tabla empleado, hacer update en la tabla empleado con el ID del departamento creado
         PreparedStatement stmt = null;
 
         try {
@@ -130,9 +130,34 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
     }
 
 	@Override
-	public Boolean delete(Departamento t) {
-		//TODO: Programar Metodo Eliminar
-		return false;
-	}
+	public Boolean delete(Departamento departamento) {
+		PreparedStatement pstmt;
+        try {
+        	try {
+        		// Actualizar los empleados con el ID del departamento a NULL
+        		pstmt = MenuPrincipal.conn.prepareStatement("UPDATE empleado SET departamento = NULL WHERE departamento = ?");
+        		pstmt.setString(1, departamento.getId().toString());
+        		pstmt.execute();
+        		
+        		// Actualizar el campo "jefe" de la tabla "departamento" a NULL
+        		pstmt = MenuPrincipal.conn.prepareStatement("UPDATE departamento SET jefe = NULL WHERE id = ?");
+        		pstmt.setString(1, departamento.getId().toString());
+        		pstmt.execute();	
+        	}catch(SQLException e) {
+        		
+        	}
 
+            // Eliminar el departamento
+            pstmt = MenuPrincipal.conn.prepareStatement("DELETE FROM departamento WHERE id = ?");
+            pstmt.setString(1, departamento.getId().toString());
+            pstmt.execute();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
+
+
