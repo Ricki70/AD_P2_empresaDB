@@ -55,7 +55,7 @@ public class MenuDepartamentos {
 		IO.print("Nombre ? ");
 		String nombre = IO.readString();
 		IO.print("Jefe ? ");
-		UUID jefe = IO.readUUID();
+		UUID jefe = IO.readUUIDOptional();
 
 		// Creamos el departamento y lo insertamos
 		Departamento departamento = new Departamento(nombre, new Empleado(jefe));

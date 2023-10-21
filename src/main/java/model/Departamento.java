@@ -18,12 +18,19 @@ public class Departamento {
 		setJefe(jefe);
 	}
 	
+	public Departamento(UUID id, String nombre) {
+		setId(id);
+		setNombre(nombre);
+	}
+	
 	public Departamento(UUID id) {
 		setId(id);
 	}
 	
 	@Override
 	public String toString() {
-		return this.id + " | " + this.nombre + " | Jefe: " + this.jefe.getNombre() + " (" + this.jefe.getId() + ")"; 
-	}
+			String format = "[ %-36s ][ %-15s ][ %-10s ]";
+		    String departamentoStr = (this.jefe != null) ?  " ][ " + this.jefe.getNombre() + " (" + this.jefe.getId().toString() + ")" : "NULL";
+		    return String.format(format, this.id.toString(), this.nombre, departamentoStr);
+		}
 }

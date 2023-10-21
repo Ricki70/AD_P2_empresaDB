@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import lombok.*;
@@ -22,6 +23,11 @@ public class Empleado {
 		setNacido(nacido);
 		setDepartamento(departamento);
 	}
+	
+	public Empleado(UUID id, String nombre) {
+		setId(id);
+		setNombre(nombre);
+	}
 
 	public Empleado(UUID id) {
 		setId(id);
@@ -29,13 +35,8 @@ public class Empleado {
 	
 	@Override
 	public String toString() {
-//		PRIMER INTENTO DE ESTRUCTURAR LOS DATOS
-//		String objDepartamento = (this.departamento == null) ? " | NULL | " : " | " + this.nacido + " | " + this.departamento.getNombre() + " (" + this.departamento.getId().toString() + ") ";
-//		return this.id + " | " + this.nombre + " | " + this.salario + objDepartamento; 
-		
-		String format = "[ %-36s ][ %-25s ][ %-8s ][ %-10s ][ %-30s ]";
-	    String departamentoStr = (this.departamento != null) ?  " ][ " + this.departamento.getNombre() + " (" + this.departamento.getId().toString() + ")" : "NULL";
-	    
-	    return String.format(format, this.id.toString(), this.nombre, this.salario.toString(), this.nacido.toString(), departamentoStr);
+		String format = "[ %-36s ][ %-15s ][ %-8s ][ %-10s ][ %-10s ]";
+	    String departamentoStr = (this.departamento != null) ? this.departamento.getNombre() + " (" + this.departamento.getId().toString() + ")" : "NULL";
+	    return String.format(format, this.id.toString(), this.nombre, this.salario.toString(), this.getNacido().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), departamentoStr);
 	}
 }

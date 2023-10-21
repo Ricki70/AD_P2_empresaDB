@@ -12,18 +12,48 @@ import view.MenuPrincipal;
 
 public class DaoDepartamento implements DaoInterface<Departamento>{
 	
+	private static Boolean obtenerFK() {
+	    try {
+	        String sql = "SELECT jefe FROM departamento WHERE jefe IS NOT NULL";
+	        Statement stmt = MenuPrincipal.conn.createStatement();
+	        ResultSet rs = stmt.executeQuery(sql);
+	        
+	        // Si la consulta devuelve al menos una fila, significa que hay registros con jefe no nulo
+	        if (rs.next()) {
+	            rs.close();
+	            stmt.close();
+	            return true;
+	        } else {
+	            rs.close();
+	            stmt.close();
+	            return false;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false; // En caso de error, se devuelve false
+	    }
+	}
+	
 	@Override
 	public String listar() {
 		StringBuffer sb = new StringBuffer();
         try {
-            String sql = "SELECT departamento.id, departamento.nombre, empleado.id, empleado.nombre FROM departamento INNER JOIN "; // TODO COMPLETAR QUERY
+        	String sql;
+        	if (obtenerFK()) {
+        		sql = "SELECT departamento.id, departamento.nombre, departamento.jefe, empleado.nombre " +
+                      	 "FROM departamento " +
+                      	 "INNER JOIN empleado ON departamento.jefe = empleado.id";
+        	}else {
+        		sql = "SELECT * FROM departamento";
+        	}
+            
             Statement stmt = MenuPrincipal.conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
-                UUID uuid = UUID.fromString(rs.getString("id"));
-                String nombre = rs.getString("nombre");
-                Empleado idEmpleado = new Empleado(UUID.fromString(rs.getString("jefe")));
+                UUID uuid = UUID.fromString(rs.getString("departamento.id"));
+                String nombre = rs.getString("departamento.nombre");
+                Empleado idEmpleado = (rs.getString("departamento.jefe") == null) ? null : new Empleado(UUID.fromString(rs.getString("departamento.jefe")), rs.getString("empleado.nombre"));
                 sb.append(new Departamento(uuid, nombre, idEmpleado).toString()).append("\n");
             }
             rs.close();
@@ -42,7 +72,8 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 	            
 	            pstmt.setString(1, departamento.getId().toString());
 	            pstmt.setString(2, departamento.getNombre());
-	            pstmt.setString(3, departamento.getJefe().getId().toString());
+	            String departamentoID = (departamento.getJefe().getId() == null) ? null : departamento.getJefe().getId().toString();
+	            pstmt.setString(3, departamentoID);
 
 	            int affectedRows = pstmt.executeUpdate();
 	            pstmt.close();
