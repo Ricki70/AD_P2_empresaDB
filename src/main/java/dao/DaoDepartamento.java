@@ -11,23 +11,17 @@ import model.Empleado;
 import view.MenuPrincipal;
 
 public class DaoDepartamento implements DaoInterface<Departamento>{
-	
+	//TODO: Controlar los errores de manera mas precisa para dar feedback al usuario
 	private static Boolean obtenerFK() {
 	    try {
 	        String sql = "SELECT jefe FROM departamento WHERE jefe IS NOT NULL";
 	        Statement stmt = MenuPrincipal.conn.createStatement();
 	        ResultSet rs = stmt.executeQuery(sql);
 	        
+	        rs.close();
+            stmt.close();
 	        // Si la consulta devuelve al menos una fila, significa que hay registros con jefe no nulo
-	        if (rs.next()) {
-	            rs.close();
-	            stmt.close();
-	            return true;
-	        } else {
-	            rs.close();
-	            stmt.close();
-	            return false;
-	        }
+	        return rs.next();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        return false; // En caso de error, se devuelve false
@@ -66,16 +60,28 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 
 	@Override
 	public Boolean insert(Departamento departamento) {
-		 try {
+		//TODO: [ERROR]: Cuando intentas introducir el campo ID del Jefe vacio no se inserta el registro sin embargo devuelve true, error a revisar
+		PreparedStatement pstmt;
+		try {
 	            String sql = "INSERT INTO departamento (id, nombre, jefe) VALUES (?, ?, ?)";
-	            PreparedStatement pstmt = MenuPrincipal.conn.prepareStatement(sql);
+	            pstmt = MenuPrincipal.conn.prepareStatement(sql);
 	            
 	            pstmt.setString(1, departamento.getId().toString());
 	            pstmt.setString(2, departamento.getNombre());
 	            String departamentoID = (departamento.getJefe().getId() == null) ? null : departamento.getJefe().getId().toString();
 	            pstmt.setString(3, departamentoID);
-
 	            int affectedRows = pstmt.executeUpdate();
+	            
+	            try {
+	            	sql = "UPDATE empleado SET departamento = ? WHERE id = ?;";
+	            	pstmt = MenuPrincipal.conn.prepareStatement(sql);
+	            	pstmt.setString(1, departamento.getId().toString());
+		            pstmt.setString(2, departamentoID);
+		            pstmt.executeUpdate();
+	            }catch(SQLException e) {
+	            	System.out.println("ERROR");
+	            }
+	            
 	            pstmt.close();
 	            return affectedRows > 0;
 	        } catch (SQLException e) {
@@ -84,8 +90,11 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 	        }
 	}
 	
+	
 	@Override
-	public Boolean update(Departamento departamento) { //TODO: Revisar que al añadir un Jefe, si este existe en la tabla empleado, hacer update en la tabla empleado con el ID del departamento creado
+	public Boolean update(Departamento departamento) { 
+		//TODO: [ERROR]: Cuando intentas introducir el campo ID del Jefe vacio no se actualiza el registro y da error
+
         PreparedStatement stmt = null;
 
         try {
@@ -95,7 +104,7 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
             if (!departamento.getNombre().equals("")) {
             	sql.append("nombre = ?, ");
             }
-            if (!departamento.getJefe().getId().toString().equals(new UUID(0, 0).toString())) {
+            if (departamento.getJefe().getId() != null) {
             	sql.append("jefe = ?, ");
             }
             
@@ -111,7 +120,7 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
             if (!departamento.getNombre().equals("")) {
                 stmt.setString(parameterIndex++, departamento.getNombre());
             }
-            if (!departamento.getJefe().getId().toString().equals(new UUID(0, 0).toString())) {
+            if (departamento.getJefe().getId() != null) {
                 stmt.setString(parameterIndex++, departamento.getJefe().getId().toString());
             }
             // Establece el ID del empleado a actualizar
@@ -131,33 +140,30 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 
 	@Override
 	public Boolean delete(Departamento departamento) {
-		PreparedStatement pstmt;
-        try {
-        	try {
-        		// Actualizar los empleados con el ID del departamento a NULL
-        		pstmt = MenuPrincipal.conn.prepareStatement("UPDATE empleado SET departamento = NULL WHERE departamento = ?");
-        		pstmt.setString(1, departamento.getId().toString());
-        		pstmt.execute();
-        		
-        		// Actualizar el campo "jefe" de la tabla "departamento" a NULL
-        		pstmt = MenuPrincipal.conn.prepareStatement("UPDATE departamento SET jefe = NULL WHERE id = ?");
-        		pstmt.setString(1, departamento.getId().toString());
-        		pstmt.execute();	
-        	}catch(SQLException e) {
-        		
-        	}
+	    PreparedStatement pstmt;
+	    try {
+	        try {
+	            // Primero, actualiza los empleados para que el campo "departamento" sea NULL
+	            String updateEmpleadosSQL = "UPDATE empleado SET departamento = NULL WHERE departamento = ?";
+	            pstmt = MenuPrincipal.conn.prepareStatement(updateEmpleadosSQL);
+	            pstmt.setString(1, departamento.getId().toString());
+	            pstmt.execute();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 
-            // Eliminar el departamento
-            pstmt = MenuPrincipal.conn.prepareStatement("DELETE FROM departamento WHERE id = ?");
-            pstmt.setString(1, departamento.getId().toString());
-            pstmt.execute();
+	        // Luego, elimina el departamento
+	        pstmt = MenuPrincipal.conn.prepareStatement("DELETE FROM departamento WHERE id = ?");
+	        pstmt.setString(1, departamento.getId().toString());
+	        pstmt.execute();
 
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+	        return true;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
 }
 
 
