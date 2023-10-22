@@ -29,7 +29,7 @@ public class Departamento {
 	
 	@Override
 	public String toString() {
-			String format = "[ %-36s ][ %-15s ][ %-10s ]";
+			String format = "[ %-36s ][ %-15s ][ %-4s ]";
 		    String departamentoStr = (this.jefe != null) ? this.jefe.getNombre() + " (" + this.jefe.getId().toString() + ")" : "NULL";
 		    return String.format(format, this.id.toString(), this.nombre, departamentoStr);
 		}

@@ -62,7 +62,8 @@ public class MenuDepartamentos {
 		
 		// Comprobamos si se ha insertado el registro
 		boolean insertado = daoDepartamento.insert(departamento);
-		IO.print(insertado ? "Insertado correctamente" : Colores.ROJO + "No se ha podido insertar el departamento" + Colores.RESET);
+		IO.print(insertado ? 
+				"Insertado correctamente" : Colores.ROJO + "No se ha encontrado un empleado con el ID iintroducido" + Colores.RESET);
 	}
 
 	private static void updateDepartamento(DaoDepartamento daoDepartamento) {
@@ -76,7 +77,14 @@ public class MenuDepartamentos {
 
 		// Creamos el departamento y lo actualizamos
 		Departamento departamento = new Departamento(id, nombre, new Empleado(jefe));
-		IO.println(daoDepartamento.update(departamento) ? "Actualizado Correctamente" : Colores.ROJO + "Registro no encontrado o Informacion no valida" + Colores.RESET);
+		IO.println(daoDepartamento.update(departamento) ? "Actualizado Correctamente" : 
+			Colores.ROJO + 
+			"\nRegistro no encontrado o Informacion no valida\n"
+			+ "Asegurese de:\n"
+			+ "- Haber rellenado almenos 1 campo\n"
+			+ "- Que el ID del empleado a modificar exista en la tabla empleado\n"
+			+ "- Que el ID del departamento Exista en la tabla departamento" 
+			+ Colores.RESET);
 	}
 
 	

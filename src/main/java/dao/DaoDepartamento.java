@@ -11,56 +11,38 @@ import model.Empleado;
 import view.MenuPrincipal;
 
 public class DaoDepartamento implements DaoInterface<Departamento>{
-	//TODO: Controlar los errores de manera mas precisa para dar feedback al usuario
-	private static Boolean obtenerFK() {
-	    try {
-	        String sql = "SELECT jefe FROM departamento WHERE jefe IS NOT NULL";
-	        Statement stmt = MenuPrincipal.conn.createStatement();
-	        ResultSet rs = stmt.executeQuery(sql);
-	        
-	        rs.close();
-            stmt.close();
-	        // Si la consulta devuelve al menos una fila, significa que hay registros con jefe no nulo
-	        return rs.next();
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        return false; // En caso de error, se devuelve false
-	    }
-	}
-	
 	@Override
 	public String listar() {
-		StringBuffer sb = new StringBuffer();
-        try {
-        	String sql;
-        	if (obtenerFK()) {
-        		sql = "SELECT departamento.id, departamento.nombre, departamento.jefe, empleado.nombre " +
-                      	 "FROM departamento " +
-                      	 "INNER JOIN empleado ON departamento.jefe = empleado.id";
-        	}else {
-        		sql = "SELECT * FROM departamento";
-        	}
-            
-            Statement stmt = MenuPrincipal.conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+	    StringBuffer sb = new StringBuffer();
+	    try {
+	        String sql = "SELECT departamento.id, departamento.nombre, departamento.jefe, empleado.nombre " +
+	                     "FROM departamento " +
+	                     "LEFT JOIN empleado ON departamento.jefe = empleado.id";
 
-            while (rs.next()) {
-                UUID uuid = UUID.fromString(rs.getString("departamento.id"));
-                String nombre = rs.getString("departamento.nombre");
-                Empleado idEmpleado = (rs.getString("departamento.jefe") == null) ? null : new Empleado(UUID.fromString(rs.getString("departamento.jefe")), rs.getString("empleado.nombre"));
-                sb.append(new Departamento(uuid, nombre, idEmpleado).toString()).append("\n");
-            }
-            rs.close();
-            stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return sb.toString();
+	        Statement stmt = MenuPrincipal.conn.createStatement();
+	        ResultSet rs = stmt.executeQuery(sql);
+
+	        String format = "%n[ %-36s ][ %-15s ][ %-4s ]%n";
+            sb.append(String.format(format, "ID", "NOMBRE", "JEFE"));
+	        while (rs.next()) {
+	            UUID uuid = UUID.fromString(rs.getString("departamento.id"));
+	            String nombre = rs.getString("departamento.nombre");
+	            String jefeId = rs.getString("departamento.jefe");
+	            String jefeNombre = rs.getString("empleado.nombre");
+
+	            Empleado idEmpleado = (jefeId == null) ? null : new Empleado(UUID.fromString(jefeId), jefeNombre);
+	            sb.append(new Departamento(uuid, nombre, idEmpleado).toString()).append("\n");
+	        }
+	        rs.close();
+	        stmt.close();
+	    } catch (SQLException e) {
+	    }
+	    return sb.toString();
 	}
 
+	//TODO: Controlar que pasa si el Jefe que intentas asignar ya es jefe de otro departamento, habria que hacer update en el departamento correspondiente para settear a NULL el jefe.
 	@Override
 	public Boolean insert(Departamento departamento) {
-		//TODO: [ERROR]: Cuando intentas introducir el campo ID del Jefe vacio no se inserta el registro sin embargo devuelve true, error a revisar
 		PreparedStatement pstmt;
 		try {
 	            String sql = "INSERT INTO departamento (id, nombre, jefe) VALUES (?, ?, ?)";
@@ -79,62 +61,46 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 		            pstmt.setString(2, departamentoID);
 		            pstmt.executeUpdate();
 	            }catch(SQLException e) {
-	            	System.out.println("ERROR");
 	            }
-	            
 	            pstmt.close();
 	            return affectedRows > 0;
 	        } catch (SQLException e) {
-	            e.printStackTrace();
 	            return false;
 	        }
 	}
 	
-	
+	//TODO: Controlar que pasa si el nuevo Jefe ya es Jefe de otro departamento.
 	@Override
 	public Boolean update(Departamento departamento) { 
-		//TODO: [ERROR]: Cuando intentas introducir el campo ID del Jefe vacio no se actualiza el registro y da error
-
         PreparedStatement stmt = null;
-
+        int parameterIndex = 1;
         try {
+        	//Creamos la sentencia SQL
             StringBuffer sql = new StringBuffer();
             sql.append("UPDATE departamento SET ");
 
-            if (!departamento.getNombre().equals("")) {
-            	sql.append("nombre = ?, ");
-            }
-            if (departamento.getJefe().getId() != null) {
-            	sql.append("jefe = ?, ");
-            }
+            if (!departamento.getNombre().equals(""))sql.append("nombre = ?, ");
+            if (departamento.getJefe().getId() != null)sql.append("jefe = ?, ");
             
-            // Elimina la coma final y agrega la condición WHERE
-            sql.substring(0, sql.length() - 2);
+         // Elimina la coma final y agrega la condición WHERE
+            int length = sql.length();
+            if (sql.charAt(length - 2) == ',') sql.delete(length - 2, length);
             sql.append(" WHERE id = ?");
 
             stmt = MenuPrincipal.conn.prepareStatement(sql.toString());
 
             // Asignamos los parámetros de la consulta
-            int parameterIndex = 1;
-
-            if (!departamento.getNombre().equals("")) {
-                stmt.setString(parameterIndex++, departamento.getNombre());
-            }
-            if (departamento.getJefe().getId() != null) {
-                stmt.setString(parameterIndex++, departamento.getJefe().getId().toString());
-            }
-            // Establece el ID del empleado a actualizar
+            if (!departamento.getNombre().equals(""))stmt.setString(parameterIndex++, departamento.getNombre());
+            if (departamento.getJefe().getId() != null)stmt.setString(parameterIndex++, departamento.getJefe().getId().toString());
+            
+            // Establece el ID del departamento a actualizar
             stmt.setString(parameterIndex, departamento.getId().toString());
 
             // Ejecuta la consulta SQL con los valores actualizados y el ID
-            int filasAfectadas = stmt.executeUpdate();
-            return filasAfectadas > 0;
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-        	System.err.println("Empleado introducido no existe en la tabla empleado"); //Aqui entra siempre, de el error que de
-        	//Habria que afinar los errores para que solo salte el que deberia saltar en cada momento
-        } 
-        
+        }
         return false;
     }
 
@@ -149,19 +115,16 @@ public class DaoDepartamento implements DaoInterface<Departamento>{
 	            pstmt.setString(1, departamento.getId().toString());
 	            pstmt.execute();
 	        } catch (SQLException e) {
-	            e.printStackTrace();
 	        }
-
 	        // Luego, elimina el departamento
 	        pstmt = MenuPrincipal.conn.prepareStatement("DELETE FROM departamento WHERE id = ?");
 	        pstmt.setString(1, departamento.getId().toString());
 	        pstmt.execute();
 
 	        return true;
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        return false;
+	    } catch (SQLException e) { 
 	    }
+	    return false;
 	}
 
 }
