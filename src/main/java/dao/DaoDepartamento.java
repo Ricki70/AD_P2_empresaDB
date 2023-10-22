@@ -18,11 +18,13 @@ public class DaoDepartamento implements DaoInterface<Departamento> {
 		try {
 			// Creamos la consulta que devolverá los registros de la tabla departamento
 			String sql = "SELECT departamento.id, departamento.nombre, departamento.jefe, empleado.nombre "
-					+ "FROM departamento LEFT JOIN empleado " + "ON departamento.jefe = empleado.id";
+					+ "FROM departamento LEFT JOIN empleado " 
+					+ "ON departamento.jefe = empleado.id";
 
 			Statement stmt = MenuPrincipal.conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 
+			// Damos formato a la muestra de datos
 			String format = "%n[ %-36s ][ %-15s ][ %-4s ]%n";
 			sb.append(String.format(format, "ID", "NOMBRE", "JEFE"));
 			
@@ -74,7 +76,7 @@ public class DaoDepartamento implements DaoInterface<Departamento> {
 			} catch (SQLException e) {
 			}
 			pstmt.close();
-			return affectedRows > 0;
+			return affectedRows > 0; // true si hay filas afectadas, false si no
 		} catch (SQLException e) {
 			return false;
 		}
@@ -84,7 +86,6 @@ public class DaoDepartamento implements DaoInterface<Departamento> {
 	@Override
 	public Boolean update(Departamento departamento) {
 		PreparedStatement stmt = null;
-		int parameterIndex = 1;
 		try {
 			// Creamos la sentencia SQL
 			StringBuffer sql = new StringBuffer();
@@ -104,6 +105,7 @@ public class DaoDepartamento implements DaoInterface<Departamento> {
 			stmt = MenuPrincipal.conn.prepareStatement(sql.toString());
 
 			// Asignamos los parámetros de la consulta
+			int parameterIndex = 1;
 			if (!departamento.getNombre().equals("")) 
 				stmt.setString(parameterIndex++, departamento.getNombre());
 			if (departamento.getJefe().getId() != null)
@@ -133,7 +135,7 @@ public class DaoDepartamento implements DaoInterface<Departamento> {
 			} catch (SQLException e) {
 			}
 			
-			// Luego, elimina el departamento
+			// Luego, eliminamos el departamento
 			pstmt = MenuPrincipal.conn.prepareStatement("DELETE FROM departamento WHERE id = ?");
 			pstmt.setString(1, departamento.getId().toString());
 			pstmt.execute();

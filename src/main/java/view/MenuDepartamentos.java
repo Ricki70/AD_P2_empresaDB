@@ -89,9 +89,8 @@ public class MenuDepartamentos {
 		IO.print("ID ? ");
 		UUID id = IO.readUUID();
 
-		// Creamos el departamento y lo actualizamos
+		// Creamos el departamento y lo eliminamos
 		Departamento departamento = new Departamento(id);
-		IO.println(daoDepartamento.delete(departamento) ? "Eliminado Correctamente"
-				: Colores.ROJO + "Registro no encontrado o Informacion no valida" + Colores.RESET);
+		IO.println(daoDepartamento.delete(departamento) ? "Eliminado Correctamente" : Colores.ROJO + "Registro no encontrado o Informacion no valida" + Colores.RESET);
 	}
 }

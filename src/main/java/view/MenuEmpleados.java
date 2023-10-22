@@ -66,7 +66,7 @@ public class MenuEmpleados {
 		Empleado empleado = new Empleado(nombre, salario, nacido, new Departamento(departamento));
 		
 		// Comprobamos si se ha insertado el registro y damos feedback
-		IO.print(daoEmpleado.insert(empleado) ? "Insertado correctamente" : Colores.ROJO + "No se ha podido insertar el empleado" + Colores.RESET);
+		IO.print(daoEmpleado.insert(empleado) ? "Insertado correctamente\n" : Colores.ROJO + "No se ha podido insertar el empleado" + Colores.RESET);
 	}
 
 	private static void updateEmpleado(DaoEmpleado daoEmpleado) {
@@ -99,6 +99,12 @@ public class MenuEmpleados {
 	}
 
 	private static void deleteEmpleado(DaoEmpleado daoEmpleado) {
-		//TODO:Programar llamada a metodo eliminar empleado
+		// Obtenemos los datos del empleado que se quiere modificar
+		IO.print("ID ? ");
+		UUID id = IO.readUUID();
+
+		// Creamos el empleado y lo eliminamos
+		Empleado empleado = new Empleado(id);
+		IO.println(daoEmpleado.delete(empleado) ? "Eliminado Correctamente" : Colores.ROJO + "Registro no encontrado o Informacion no valida" + Colores.RESET);
 	}
 }
