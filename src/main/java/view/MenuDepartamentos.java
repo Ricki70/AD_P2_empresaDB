@@ -59,43 +59,39 @@ public class MenuDepartamentos {
 
 		// Creamos el departamento y lo insertamos
 		Departamento departamento = new Departamento(nombre, new Empleado(jefe));
-		
+
 		// Comprobamos si se ha insertado el registro
 		boolean insertado = daoDepartamento.insert(departamento);
-		IO.print(insertado ? 
-				"Insertado correctamente" : Colores.ROJO + "No se ha encontrado un empleado con el ID iintroducido" + Colores.RESET);
+		IO.print(insertado ? "Insertado correctamente"
+				: Colores.ROJO + "No se ha encontrado un empleado con el ID introducido" + Colores.RESET);
 	}
 
 	private static void updateDepartamento(DaoDepartamento daoDepartamento) {
 		// Obtenemos los datos del departamento que se quiere modificar
 		IO.print("ID ? ");
-		UUID id = IO.readUUID(); 
+		UUID id = IO.readUUID();
 		IO.print("Nombre ? ");
 		String nombre = IO.readStringOptional();
 		IO.print("Jefe ? ");
-		UUID jefe = IO.readUUIDOptional(); 
+		UUID jefe = IO.readUUIDOptional();
 
 		// Creamos el departamento y lo actualizamos
 		Departamento departamento = new Departamento(id, nombre, new Empleado(jefe));
-		IO.println(daoDepartamento.update(departamento) ? "Actualizado Correctamente" : 
-			Colores.ROJO + 
-			"\nRegistro no encontrado o Informacion no valida\n"
-			+ "Asegurese de:\n"
-			+ "- Haber rellenado almenos 1 campo\n"
-			+ "- Que el ID del empleado a modificar exista en la tabla empleado\n"
-			+ "- Que el ID del departamento Exista en la tabla departamento" 
-			+ Colores.RESET);
+		IO.println(daoDepartamento.update(departamento) ? "Actualizado Correctamente"
+				: Colores.ROJO + "\nRegistro no encontrado o Informacion no valida\n" + "Asegurese de:\n"
+						+ "- Haber rellenado al menos 1 campo\n"
+						+ "- Que el ID del empleado a modificar exista en la tabla empleado\n"
+						+ "- Que el ID del departamento exista en la tabla departamento" + Colores.RESET);
 	}
 
-	
 	private static void deleteDepartamento(DaoDepartamento daoDepartamento) {
 		// Obtenemos los datos del departamento que se quiere modificar
-				IO.print("ID ? ");
-				UUID id = IO.readUUID(); 
-				
-				// Creamos el departamento y lo actualizamos
-				Departamento departamento = new Departamento(id);
-				IO.println(daoDepartamento.delete(departamento) ? "Eliminado Correctamente" : Colores.ROJO + "Registro no encontrado o Informacion no valida" + Colores.RESET);
+		IO.print("ID ? ");
+		UUID id = IO.readUUID();
 
+		// Creamos el departamento y lo actualizamos
+		Departamento departamento = new Departamento(id);
+		IO.println(daoDepartamento.delete(departamento) ? "Eliminado Correctamente"
+				: Colores.ROJO + "Registro no encontrado o Informacion no valida" + Colores.RESET);
 	}
 }
