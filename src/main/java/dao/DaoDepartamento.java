@@ -43,25 +43,23 @@ public class DaoDepartamento implements DaoInterface<Departamento> {
 			stmt.close();
 		} catch (SQLException e) {
 		}
+		
 		// Devolvemos el string con todos los registros de la tabla
 		return sb.toString();
 	}
 
-	// TODO: Controlar que pasa si el Jefe que intentas asignar ya es jefe de otro
-	// departamento, habria que hacer update en el departamento correspondiente para
-	// settear a NULL el jefe.
 	@Override
 	public Boolean insert(Departamento departamento) {
 		PreparedStatement pstmt;
 		try {
-			String sql;
+			// Comprobamos si se ha introducido un jefe para el departamento
 			String empleadoID = (departamento.getJefe().getId() == null) ? null : departamento.getJefe().getId().toString();
 			
+			// Si el jefe es null o existe ese empleado, realizamos la insercción del departamento
 			if (empleadoID == null || existeEmpleado(empleadoID)) {
-				
-				actualizarJefes(empleadoID);
-				// Creamos la consulta para insertar un registro en la tabla departamento
-				sql = "INSERT INTO departamento (id, nombre, jefe) VALUES (?, ?, ?)";
+				// PASO 1 -> insertamos el nuevo departamento
+				// Creamos la consulta para insertar el registro en la tabla departamento
+				String sql = "INSERT INTO departamento (id, nombre, jefe) VALUES (?, ?, ?)";
 				pstmt = MenuPrincipal.conn.prepareStatement(sql);
 	
 				// Asignamos los parámetros de la consulta
@@ -69,35 +67,39 @@ public class DaoDepartamento implements DaoInterface<Departamento> {
 				pstmt.setString(2, departamento.getNombre());
 				pstmt.setString(3, empleadoID);
 				
-				int affectedRows = pstmt.executeUpdate();
+				// PASO 2 -> actualizamos el departamento que tuviese como jefe al jefe introducido para resetearlo a null
+				actualizarJefes(empleadoID);
 				
+				// PASO 3 -> actualizamos el empleado que se ha establecido como jefe y le actualizamos el departamento al nuevo departamento insertado
 				actualizarEmpleado(empleadoID, departamento);
-				return affectedRows > 0; // true si hay filas afectadas, false si no
+				
+				// Devolvemos el número de filas afectadas por la actalización (true si hay filas afectadas, false si no)
+				return pstmt.executeUpdate() > 0; 
 			}
 		} catch (SQLException e) {
-			return false;
+			return false;  // ha habido problemas, no se ha insertado
 		}
-		return false;
+		return false; // ha habido problemas, no se ha insertado
 	}
 
-	// TODO: Controlar que pasa si el nuevo Jefe ya es Jefe de otro departamento.
 	@Override
 	public Boolean update(Departamento departamento) {
-		PreparedStatement pstmt = null;
+		PreparedStatement pstmt;
 		try {
+			// Comprobamos si se ha introducido un jefe para el departamento
 			String empleadoID = (departamento.getJefe().getId() == null) ? null : departamento.getJefe().getId().toString();
-			actualizarJefes(empleadoID);
 			
-			// Creamos la sentencia SQL
+			// PASO 1 -> modificamos el departamento
+			// Creamos la sentencia SQL, que será una concatenación en función de los campos que se quieren modificar
 			StringBuffer sql = new StringBuffer();
 			sql.append("UPDATE departamento SET ");
 
-			if (!departamento.getNombre().equals(""))
-				sql.append("nombre = ?, ");
+			if (!departamento.getNombre().equals(""))  
+				sql.append("nombre = ?, ");  // modifica nombre
 			if (departamento.getJefe().getId() != null)
-				sql.append("jefe = ?, ");
+				sql.append("jefe = ?, ");  // modifica jefe
 
-			// Elimina la coma final y agrega la condición WHERE
+			// Eliminamos la coma final y agregamos la condición WHERE
 			int length = sql.length();
 			if (sql.charAt(length - 2) == ',') sql.delete(length - 2, length);
 			sql.append(" WHERE id = ?");
@@ -111,23 +113,27 @@ public class DaoDepartamento implements DaoInterface<Departamento> {
 			if (departamento.getJefe().getId() != null)
 				pstmt.setString(parameterIndex++, departamento.getJefe().getId().toString());
 
-			// Establece el ID del departamento a actualizar
+			// Establecemos el ID del departamento a actualizar
 			pstmt.setString(parameterIndex, departamento.getId().toString());
 			
+			// PASO 2 -> actualizamos el departamento que tuviese como jefe al jefe introducido para resetearlo a null
+			actualizarJefes(empleadoID);
+			
+			// PASO 3 -> actualizamos el empleado que se ha establecido como jefe y le actualizamos el departamento al nuevo departamento insertado
 			actualizarEmpleado(empleadoID, departamento);
-			// Ejecuta la consulta SQL y comprueba si se ha modificado algún registro o no
+			
+			// Devolvemos el número de filas afectadas por la actalización (true si hay filas afectadas, false si no)
 			return pstmt.executeUpdate() > 0;
-
 		} catch (SQLException e) {
 		}
-		return false;
+		return false; // ha habido problemas, no se ha insertado
 	}
 
 	@Override
 	public Boolean delete(Departamento departamento) {
 		PreparedStatement pstmt;
 		try {
-			// Primero, actualiza los empleados para que el campo "departamento" sea NULL
+			// Primero, actualizamos los empleados con ese departamento para resetearles el campo "departamento" a NULL
 			try {
 				String updateEmpleadosSQL = "UPDATE empleado SET departamento = NULL WHERE departamento = ?";
 				pstmt = MenuPrincipal.conn.prepareStatement(updateEmpleadosSQL);
@@ -136,8 +142,9 @@ public class DaoDepartamento implements DaoInterface<Departamento> {
 			} catch (SQLException e) {
 			}
 			
-			// Luego, eliminamos el departamento
-			pstmt = MenuPrincipal.conn.prepareStatement("DELETE FROM departamento WHERE id = ?");
+			// Después, eliminamos el departamento
+			String sql = "DELETE FROM departamento WHERE id = ?";
+			pstmt = MenuPrincipal.conn.prepareStatement(sql);
 			pstmt.setString(1, departamento.getId().toString());
 			pstmt.execute();
 
@@ -146,32 +153,49 @@ public class DaoDepartamento implements DaoInterface<Departamento> {
 		}
 		return false;
 	}
-	
+
+	/**
+	 * Método privado que comprueba si existe un empleado dado su ID.
+	 * 
+	 * @param empleadoID id por el que buscamos al empleado
+	 * @return true si existe el empleado, false en caso contrario
+	 * @throws SQLException excepción tratada en los métodos que llaman a este método
+	 */
 	private static Boolean existeEmpleado(String empleadoID) throws SQLException {
-		PreparedStatement pstmt;
 		String sql = "SELECT * FROM empleado WHERE id = ?";
-		pstmt = MenuPrincipal.conn.prepareStatement(sql);
+		PreparedStatement pstmt = MenuPrincipal.conn.prepareStatement(sql);
 		pstmt.setString(1, empleadoID);
-		return pstmt.executeQuery().next();
+		return pstmt.executeQuery().next();  // devuelve si hay registros o no
 	}
 	
+	/**
+	 * Método privado para resetear a NULL el jefe de un departamento
+	 * 
+	 * @param empleadoID id del jefe del departamento
+	 * @return true si se ha podido modificar, false en caso contrario
+	 * @throws SQLException excepción tratada en los métodos que llaman a este método
+	 */
 	private static Boolean actualizarJefes(String empleadoID) throws SQLException {
-		String sql;
-		PreparedStatement pstmt = null;
-		sql = "UPDATE departamento SET jefe = NULL WHERE jefe = ?";
-		pstmt = MenuPrincipal.conn.prepareStatement(sql);
+		String sql = "UPDATE departamento SET jefe = NULL WHERE jefe = ?";
+		PreparedStatement pstmt = MenuPrincipal.conn.prepareStatement(sql);
 		pstmt.setString(1, empleadoID);
-		return pstmt.executeUpdate() > 0;
+		return pstmt.executeUpdate() > 0;  // devuelve si hay filas afectadas o no
 	}
 	
+	/**
+	 * Método privado para modificar el departamento de un empleado
+	 * 
+	 * @param empleadoID id del empleado que se quiere modificar
+	 * @param departamento que se quiere asignar al empleado
+	 * @return true si se ha podido modificar, false en caso contrario
+	 * @throws SQLException excepción tratada en los métodos que llaman a este método
+	 */
 	private static Boolean actualizarEmpleado(String empleadoID, Departamento departamento) throws SQLException {
-		// Actualizamos en la tabla empleado el registro del jefe introducido asignándole el departamento creado
 		String sql = "UPDATE empleado SET departamento = ? WHERE id = ?;";
-		PreparedStatement pstmt = null;
-		pstmt = MenuPrincipal.conn.prepareStatement(sql);
+		PreparedStatement pstmt = MenuPrincipal.conn.prepareStatement(sql);
 		pstmt.setString(1, departamento.getId().toString());
 		pstmt.setString(2, empleadoID);
-		return pstmt.executeUpdate() > 0;
+		return pstmt.executeUpdate() > 0;  // devuelve si hay filas afectadas o no
 	}
 
 }

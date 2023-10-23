@@ -7,12 +7,14 @@ package dao;
 public interface DaoInterface<T> {
 	/**
 	 * Método para listar los registros de tabla.
+	 * 
 	 * @return 
 	 */
 	public String listar();
 	
 	/**
 	 * Método para insertar un registro en la tabla.
+	 * 
 	 * @param t registro que se quiere insertar
 	 * @return número de filas afectadas
 	 */
@@ -20,6 +22,7 @@ public interface DaoInterface<T> {
 	
 	/**
 	 * Método para actualizar un registro de la tabla.
+	 * 
 	 * @param t registro que se quiere modificar
 	 * @return número de filas afectadas
 	 */
@@ -27,6 +30,7 @@ public interface DaoInterface<T> {
 	
 	/**
 	 * Método para eliminar un registro de la tabla.
+	 * 
 	 * @param t registro que se quiere eliminar
 	 * @return número de filas afectadas
 	 */
