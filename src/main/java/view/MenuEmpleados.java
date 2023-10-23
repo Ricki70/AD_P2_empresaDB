@@ -106,7 +106,7 @@ public class MenuEmpleados {
 		Empleado empleado = new Empleado(id);
 		IO.println(daoEmpleado.delete(empleado) ? "Eliminado correctamente" : 
 			Colores.ROJO 
-			+ "\nRegistro no encontrado o informacion no valida\n" 
+			+ "Registro no encontrado o informacion no valida\n" 
 			+ Colores.RESET);
 	}
 }
