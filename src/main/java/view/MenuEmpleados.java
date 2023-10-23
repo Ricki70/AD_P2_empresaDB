@@ -66,7 +66,10 @@ public class MenuEmpleados {
 		Empleado empleado = new Empleado(nombre, salario, nacido, new Departamento(departamento));
 		
 		// Comprobamos si se ha insertado el registro y damos feedback
-		IO.print(daoEmpleado.insert(empleado) ? "Insertado correctamente\n" : Colores.ROJO + "No se ha podido insertar el empleado" + Colores.RESET);
+		IO.println(daoEmpleado.insert(empleado) ? "Insertado correctamente" : 
+			Colores.ROJO 
+			+ "\nNo se ha podido insertar el empleado\n" 
+			+ Colores.RESET);
 	}
 
 	private static void updateEmpleado(DaoEmpleado daoEmpleado) {
@@ -82,15 +85,11 @@ public class MenuEmpleados {
 		IO.print("ID del departamento ? ");
 		UUID departamento = IO.readUUIDOptional();  
 
-		// Creamos el empleado y lo actualizamos
+		// Creamos el empleado y lo modificamos
 		Empleado empleado = new Empleado(id, nombre, salario, nacido, new Departamento(departamento));
-
-		//Comprobamos que se actualice y damos feedback
-		IO.println(daoEmpleado.update(empleado) ? 
-				"\nActualizado Correctamente" 
-				: 
+		IO.println(daoEmpleado.update(empleado) ? "Actualizado correctamente" : 
 				Colores.ROJO + 
-				"\nRegistro no encontrado o Informacion no valida\n"
+				"\nRegistro no encontrado o informacion no valida\n"
 				+ "Asegúrese de:\n"
 				+ "- Haber rellenado al menos 1 campo\n"
 				+ "- Que el ID del empleado a modificar exista en la tabla empleado\n"
@@ -105,6 +104,9 @@ public class MenuEmpleados {
 
 		// Creamos el empleado y lo eliminamos
 		Empleado empleado = new Empleado(id);
-		IO.println(daoEmpleado.delete(empleado) ? "Eliminado Correctamente" : Colores.ROJO + "Registro no encontrado o Informacion no valida" + Colores.RESET);
+		IO.println(daoEmpleado.delete(empleado) ? "Eliminado correctamente" : 
+			Colores.ROJO 
+			+ "\nRegistro no encontrado o informacion no valida\n" 
+			+ Colores.RESET);
 	}
 }
