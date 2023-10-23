@@ -53,6 +53,7 @@ public class SingletonConexion {
 
  	/**
  	 * Método que devuelve la conexión a la base de datos.
+ 	 * 
  	 * @return conexión
  	 */
     public static Connection getConnection() {

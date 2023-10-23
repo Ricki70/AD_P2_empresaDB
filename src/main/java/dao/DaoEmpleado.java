@@ -47,6 +47,7 @@ public class DaoEmpleado implements DaoInterface<Empleado> {
 			stmt.close();
 		} catch (SQLException e) {
 		}
+		
 		// Devolvemos el string con todos los registros de la tabla
 		return sb.toString();
 	}
@@ -66,9 +67,7 @@ public class DaoEmpleado implements DaoInterface<Empleado> {
 			String departamentoID = (empleado.getDepartamento().getId() == null) ? null : empleado.getDepartamento().getId().toString();
 			pstmt.setString(5, departamentoID);
 
-			int affectedRows = pstmt.executeUpdate();
-			pstmt.close();
-			return affectedRows > 0;  // true si hay filas afectadas, false si no
+			return pstmt.executeUpdate() > 0;  // true si hay filas afectadas, false si no
 		} catch (SQLException e) {
 			return false;
 		}
@@ -91,7 +90,7 @@ public class DaoEmpleado implements DaoInterface<Empleado> {
 			if (empleado.getDepartamento().getId() != null)
 				sql.append("departamento = ?, ");
 
-			// Elimina la coma final y agrega la condición WHERE
+			// Eliminamos la coma final y agregamos la condición WHERE
 			int length = sql.length();
 			if (sql.charAt(length - 2) == ',')
 				sql.delete(length - 2, length);
@@ -106,15 +105,14 @@ public class DaoEmpleado implements DaoInterface<Empleado> {
 			if (empleado.getSalario() != null)
 				stmt.setDouble(parameterIndex++, empleado.getSalario());
 			if (empleado.getNacido() != null)
-				stmt.setString(parameterIndex++,
-						empleado.getNacido().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+				stmt.setString(parameterIndex++, empleado.getNacido().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 			if (empleado.getDepartamento().getId() != null)
 				stmt.setString(parameterIndex++, empleado.getDepartamento().getId().toString());
 
-			// Establece el ID del empleado a actualizar
+			// Establecemos el ID del empleado a actualizar
 			stmt.setString(parameterIndex, empleado.getId().toString());
 
-			// Ejecuta la consulta SQL y comprueba si se ha modificado algún registro o no
+			// Ejecutamos la consulta SQL y comprobamos si se ha modificado algún registro o no
 			return stmt.executeUpdate() > 0;
 
 		} catch (SQLException e) {
@@ -126,7 +124,7 @@ public class DaoEmpleado implements DaoInterface<Empleado> {
 	public Boolean delete(Empleado empleado) {
 		PreparedStatement pstmt;
 		try {
-			// Primero, actualiza los departamentos para que el campo "jefe" sea NULL
+			// Primero, actualizamos los departamentos para que el campo "jefe" sea NULL
 			try {
 				String updateDepartamentosSQL = "UPDATE departamento SET jefe = NULL WHERE jefe = ?";
 				pstmt = MenuPrincipal.conn.prepareStatement(updateDepartamentosSQL);

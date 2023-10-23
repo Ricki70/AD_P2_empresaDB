@@ -78,7 +78,8 @@ public class MenuDepartamentos {
 		// Creamos el departamento y lo actualizamos
 		Departamento departamento = new Departamento(id, nombre, new Empleado(jefe));
 		IO.println(daoDepartamento.update(departamento) ? "Actualizado Correctamente"
-				: Colores.ROJO + "\nRegistro no encontrado o Informacion no valida\n" + "Asegurese de:\n"
+				: Colores.ROJO + "\nRegistro no encontrado o Información no válida\n" 
+						+ "Asegúrese de:\n"
 						+ "- Haber rellenado al menos 1 campo\n"
 						+ "- Que el ID del empleado a modificar exista en la tabla empleado\n"
 						+ "- Que el ID del departamento exista en la tabla departamento" + Colores.RESET);
@@ -91,6 +92,7 @@ public class MenuDepartamentos {
 
 		// Creamos el departamento y lo eliminamos
 		Departamento departamento = new Departamento(id);
-		IO.println(daoDepartamento.delete(departamento) ? "Eliminado Correctamente" : Colores.ROJO + "Registro no encontrado o Informacion no valida" + Colores.RESET);
+		IO.println(daoDepartamento.delete(departamento) ? "Eliminado Correctamente" 
+				: Colores.ROJO + "Registro no encontrado o Información no válida" + Colores.RESET);
 	}
 }

@@ -91,7 +91,7 @@ public class MenuEmpleados {
 				: 
 				Colores.ROJO + 
 				"\nRegistro no encontrado o Informacion no valida\n"
-				+ "Asegurese de:\n"
+				+ "Asegúrese de:\n"
 				+ "- Haber rellenado al menos 1 campo\n"
 				+ "- Que el ID del empleado a modificar exista en la tabla empleado\n"
 				+ "- Que el ID del departamento exista en la tabla departamento" 
