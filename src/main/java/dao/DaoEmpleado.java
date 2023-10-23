@@ -37,7 +37,7 @@ public class DaoEmpleado implements DaoInterface<Empleado> {
 				String nombre = rs.getString("empleado.nombre");
 				Double salario = rs.getDouble("empleado.salario");
 				LocalDate nacido = LocalDate.parse(rs.getString("empleado.nacido"),
-						DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+						DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 				Departamento idDepartamento = (rs.getString("empleado.departamento") == null) ? null
 						: new Departamento(UUID.fromString(rs.getString("empleado.departamento")),
 								rs.getString("departamento.nombre"));
@@ -62,7 +62,7 @@ public class DaoEmpleado implements DaoInterface<Empleado> {
 			pstmt.setString(1, empleado.getId().toString());
 			pstmt.setString(2, empleado.getNombre());
 			pstmt.setDouble(3, empleado.getSalario());
-			pstmt.setString(4, empleado.getNacido().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			pstmt.setString(4, empleado.getNacido().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 			String departamentoID = (empleado.getDepartamento().getId() == null) ? null : empleado.getDepartamento().getId().toString();
 			pstmt.setString(5, departamentoID);
 

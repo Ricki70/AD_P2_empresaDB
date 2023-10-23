@@ -54,14 +54,20 @@ public class DaoDepartamento implements DaoInterface<Departamento> {
 	public Boolean insert(Departamento departamento) {
 		PreparedStatement pstmt;
 		try {
+			
+			String sql = "UPDATE departamento SET jefe = NULL WHERE jefe = ?;";
+			pstmt = MenuPrincipal.conn.prepareStatement(sql);
+			String empleadoID = (departamento.getJefe().getId() == null) ? null : departamento.getJefe().getId().toString();
+			pstmt.setString(1, empleadoID);
+			pstmt.executeUpdate();
+			
 			// Creamos la consulta para insertar un registro en la tabla departamento
-			String sql = "INSERT INTO departamento (id, nombre, jefe) VALUES (?, ?, ?)";
+			sql = "INSERT INTO departamento (id, nombre, jefe) VALUES (?, ?, ?)";
 			pstmt = MenuPrincipal.conn.prepareStatement(sql);
 
 			// Asignamos los parámetros de la consulta
 			pstmt.setString(1, departamento.getId().toString());
 			pstmt.setString(2, departamento.getNombre());
-			String empleadoID = (departamento.getJefe().getId() == null) ? null : departamento.getJefe().getId().toString();
 			pstmt.setString(3, empleadoID);
 			
 			int affectedRows = pstmt.executeUpdate();
