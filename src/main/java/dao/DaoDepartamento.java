@@ -55,7 +55,7 @@ public class DaoDepartamento implements DaoInterface<Departamento> {
 			// Comprobamos si se ha introducido un jefe para el departamento
 			String empleadoID = (departamento.getJefe().getId() == null) ? null : departamento.getJefe().getId().toString();
 			
-			// Si el jefe es null o existe ese empleado, realizamos la insercción del departamento
+			// Si el jefe es null o existe ese empleado, insertamos el nuevo departamento
 			if (empleadoID == null || existeEmpleado(empleadoID)) {
 				// PASO 1 -> insertamos el nuevo departamento
 				// Creamos la consulta para insertar el registro en la tabla departamento
@@ -89,44 +89,47 @@ public class DaoDepartamento implements DaoInterface<Departamento> {
 			// Comprobamos si se ha introducido un jefe para el departamento
 			String empleadoID = (departamento.getJefe().getId() == null) ? null : departamento.getJefe().getId().toString();
 			
-			// PASO 1 -> modificamos el departamento
-			// Creamos la sentencia SQL, que será una concatenación en función de los campos que se quieren modificar
-			StringBuffer sql = new StringBuffer();
-			sql.append("UPDATE departamento SET ");
-
-			if (!departamento.getNombre().equals(""))  
-				sql.append("nombre = ?, ");  // modifica nombre
-			if (departamento.getJefe().getId() != null)
-				sql.append("jefe = ?, ");  // modifica jefe
-
-			// Eliminamos la coma final y agregamos la condición WHERE
-			int length = sql.length();
-			if (sql.charAt(length - 2) == ',') sql.delete(length - 2, length);
-			sql.append(" WHERE id = ?");
-
-			pstmt = MenuPrincipal.conn.prepareStatement(sql.toString());
-
-			// Asignamos los parámetros de la consulta
-			int parameterIndex = 1;
-			if (!departamento.getNombre().equals("")) 
-				pstmt.setString(parameterIndex++, departamento.getNombre());
-			if (departamento.getJefe().getId() != null)
-				pstmt.setString(parameterIndex++, departamento.getJefe().getId().toString());
-
-			// Establecemos el ID del departamento a actualizar
-			pstmt.setString(parameterIndex, departamento.getId().toString());
-			
-			// PASO 2 -> actualizamos el departamento que tuviese como jefe al jefe introducido para resetearlo a null
-			actualizarJefes(empleadoID);
-			
-			// PASO 3 -> actualizamos el empleado que se ha establecido como jefe y le actualizamos el departamento al nuevo departamento insertado
-			actualizarEmpleado(empleadoID, departamento);
-			
-			// Devolvemos el número de filas afectadas por la actalización (true si hay filas afectadas, false si no)
-			return pstmt.executeUpdate() > 0;
+			// Si el jefe es null o existe ese empleado, modificamos el departamento
+			if(empleadoID == null || existeEmpleado(empleadoID)) {
+				// PASO 1 -> modificamos el departamento
+				// Creamos la sentencia SQL, que será una concatenación en función de los campos que se quieren modificar
+				StringBuffer sql = new StringBuffer();
+				sql.append("UPDATE departamento SET ");
+	
+				if (!departamento.getNombre().equals(""))  
+					sql.append("nombre = ?, ");  // modifica nombre
+				if (departamento.getJefe().getId() != null)
+					sql.append("jefe = ?, ");  // modifica jefe
+	
+				// Eliminamos la coma final y agregamos la condición WHERE
+				int length = sql.length();
+				if (sql.charAt(length - 2) == ',') sql.delete(length - 2, length);
+				sql.append(" WHERE id = ?");
+	
+				pstmt = MenuPrincipal.conn.prepareStatement(sql.toString());
+	
+				// Asignamos los parámetros de la consulta
+				int parameterIndex = 1;
+				if (!departamento.getNombre().equals("")) 
+					pstmt.setString(parameterIndex++, departamento.getNombre());
+				if (departamento.getJefe().getId() != null)
+					pstmt.setString(parameterIndex++, departamento.getJefe().getId().toString());
+	
+				// Establecemos el ID del departamento a actualizar
+				pstmt.setString(parameterIndex, departamento.getId().toString());
+				
+				// PASO 2 -> actualizamos el departamento que tuviese como jefe al jefe introducido para resetearlo a null
+				actualizarJefes(empleadoID);
+				
+				// PASO 3 -> actualizamos el empleado que se ha establecido como jefe y le actualizamos el departamento al nuevo departamento insertado
+				actualizarEmpleado(empleadoID, departamento);
+				
+				// Ejecutamos la consulta SQL y comprobamos si se ha modificado algún registro o no
+				return pstmt.executeUpdate() > 0;
+			}
 		} catch (SQLException e) {
 		}
-		return false; // ha habido problemas, no se ha insertado
+		return false; // ha habido problemas, no se ha modificado
 	}
 
 	@Override
