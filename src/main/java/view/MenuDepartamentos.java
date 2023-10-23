@@ -95,7 +95,7 @@ public class MenuDepartamentos {
 		Departamento departamento = new Departamento(id);
 		IO.println(daoDepartamento.delete(departamento) ? "Eliminado Correctamente" :
 				Colores.ROJO 
-				+ "Registro no encontrado o Información no válida" 
+				+ "Registro no encontrado o información no válida" 
 				+ Colores.RESET);
 	}
 }
