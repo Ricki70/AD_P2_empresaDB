@@ -97,16 +97,16 @@ public class SingletonConexion {
             
             // Creamos las foreign key de las tablas
             // Controlamos que no se creen las foreign key si ya existen las tablas
-            try {
-            	statement.executeUpdate("ALTER TABLE departamento "
-                		+ "ADD CONSTRAINT fk_jefe " 
-                		+ "FOREIGN KEY (jefe) REFERENCES empleado(id)");
-                
-                statement.executeUpdate("ALTER TABLE empleado "
-                		+ "ADD CONSTRAINT fk_departamento " 
-                		+ "FOREIGN KEY (departamento) REFERENCES departamento(id)"); 	
-            } catch(Exception e) {
-            }
+//            try {
+//            	statement.executeUpdate("ALTER TABLE departamento "
+//                		+ "ADD CONSTRAINT fk_jefe " 
+//                		+ "FOREIGN KEY (jefe) REFERENCES empleado(id)");
+//                
+//                statement.executeUpdate("ALTER TABLE empleado "
+//                		+ "ADD CONSTRAINT fk_departamento " 
+//                		+ "FOREIGN KEY (departamento) REFERENCES departamento(id)"); 	
+//            } catch(Exception e) {
+//            }
             
             // Cerramos la declaración
             statement.close();
