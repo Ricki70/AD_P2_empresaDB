@@ -3,6 +3,7 @@ package view;
 import java.sql.Connection;
 import java.util.List;
 
+import constantes.color.Colores;
 import dao.SingletonConexion;
 import io.IO;
 
@@ -12,7 +13,7 @@ public class MenuPrincipal {
 	
 	public static void main(String[] args) {	
 		List<String> opciones = List.of( 
-				" =======|MENU PRINCIPAL|========\n",
+				"\n =======|MENU PRINCIPAL|========\n",
 				"| 1.- Gestionar Departamentos	 |\n", 
 				"| 2.- Gestionar Empleados        |\n", 
 				"| 3.- Salir			 |\n",
@@ -32,9 +33,10 @@ public class MenuPrincipal {
 				case 3:  // salir del menú
 					IO.println("\nHas salido del menú");
 					SingletonConexion.closeConnection();
+					System.exit(1);
 					return;
 				default:
-					IO.println("Opción no válida");
+					IO.println(Colores.ROJO + "Opción no válida" + Colores.RESET);
 			}
 		}
 

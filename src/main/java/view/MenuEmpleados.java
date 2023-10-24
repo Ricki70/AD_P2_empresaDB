@@ -43,7 +43,7 @@ public class MenuEmpleados {
 					MenuPrincipal.main(null);
 					break;
 				default:
-					IO.println("Opción no válida");
+					IO.println(Colores.ROJO + "Opción no válida" + Colores.RESET);
 			}
 		}
 	}

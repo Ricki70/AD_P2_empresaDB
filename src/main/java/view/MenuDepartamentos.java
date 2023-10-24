@@ -14,7 +14,7 @@ public class MenuDepartamentos {
 		DaoDepartamento daoDepartamento = new DaoDepartamento();
 
 		List<String> opciones = List.of(
-				"\n\n ======|MENU DEPARTAMENTOS|=====\n", 
+				"\n ======|MENU DEPARTAMENTOS|=====\n", 
 				"| 1.- Listar Departamentos	|\n",
 				"| 2.- Agregar Departamento	|\n", 
 				"| 3.- Modificar Departamento    |\n",
@@ -42,7 +42,7 @@ public class MenuDepartamentos {
 					MenuPrincipal.main(null);
 					break;
 				default:
-					IO.println("Opción no válida");
+					IO.println(Colores.ROJO + "Opción no válida" + Colores.RESET);
 			}
 		}
 	}
