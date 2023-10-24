@@ -21,7 +21,7 @@ public class MenuPrincipal {
 
 		while (true) {
 			opciones.stream().forEach(System.out :: print);
-			System.out.print("\nIntroduce tu eleccion: ");
+			IO.print("\nIntroduce tu elección: ");
 			switch (IO.readInt()) {
 				case 1:  // menú departamentos
 					MenuDepartamentos.mostrarMenu();

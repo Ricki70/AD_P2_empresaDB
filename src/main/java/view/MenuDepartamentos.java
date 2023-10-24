@@ -24,24 +24,25 @@ public class MenuDepartamentos {
 
 		while (true) {
 			opciones.stream().forEach(System.out::print);
-			IO.print("\nIntroduce tu eleccion: ");
+			IO.print("\nIntroduce tu elección: ");
 			switch (IO.readInt()) {
-			case 1:
-				listarDepartamentos(daoDepartamento);
-				break;
-			case 2:
-				insertDepartamento(daoDepartamento);
-				break;
-			case 3:
-				updateDepartamento(daoDepartamento);
-				break;
-			case 4:
-				deleteDepartamento(daoDepartamento);
-				break;
-			case 5:
-				MenuPrincipal.main(null);
-				break;
-			default:
+				case 1:
+					listarDepartamentos(daoDepartamento);
+					break;
+				case 2:
+					insertDepartamento(daoDepartamento);
+					break;
+				case 3:
+					updateDepartamento(daoDepartamento);
+					break;
+				case 4:
+					deleteDepartamento(daoDepartamento);
+					break;
+				case 5:
+					MenuPrincipal.main(null);
+					break;
+				default:
+					IO.println("Opción no válida");
 			}
 		}
 	}
@@ -93,7 +94,7 @@ public class MenuDepartamentos {
 
 		// Creamos el departamento y lo eliminamos
 		Departamento departamento = new Departamento(id);
-		IO.println(daoDepartamento.delete(departamento) ? "Eliminado Correctamente" :
+		IO.println(daoDepartamento.delete(departamento) ? "Eliminado correctamente" :
 				Colores.ROJO 
 				+ "Registro no encontrado o información no válida" 
 				+ Colores.RESET);

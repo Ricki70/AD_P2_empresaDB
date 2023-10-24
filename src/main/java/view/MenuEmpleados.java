@@ -25,24 +25,25 @@ public class MenuEmpleados {
 
 		while (true) {
 			opciones.stream().forEach(System.out::print);
-			IO.print("\nIntroduce tu eleccion: ");
+			IO.print("\nIntroduce tu elección: ");
 			switch (IO.readInt()) {
-			case 1:
-				listarEmpleados(daoEmpleado);
-				break;
-			case 2:
-				insertEmpleado(daoEmpleado);
-				break;
-			case 3:
-				updateEmpleado(daoEmpleado);
-				break;
-			case 4:
-				deleteEmpleado(daoEmpleado);
-				break;
-			case 5:
-				MenuPrincipal.main(null);
-				break;
-			default:
+				case 1:
+					listarEmpleados(daoEmpleado);
+					break;
+				case 2:
+					insertEmpleado(daoEmpleado);
+					break;
+				case 3:
+					updateEmpleado(daoEmpleado);
+					break;
+				case 4:
+					deleteEmpleado(daoEmpleado);
+					break;
+				case 5:
+					MenuPrincipal.main(null);
+					break;
+				default:
+					IO.println("Opción no válida");
 			}
 		}
 	}
