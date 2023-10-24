@@ -80,7 +80,7 @@ public class SingletonConexion {
     private void crearTablas() {
     	try {
             Statement statement = connection.createStatement();
-            String tipo = (name.equals("MariaDB")) ? "VARCHAR(50)" : "TEXT";
+            String tipo = (name.equals("MariaDB")) ? "VARCHAR(50)" : "STRING";
 
             // Creamos la tabla departamento
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS departamento ("

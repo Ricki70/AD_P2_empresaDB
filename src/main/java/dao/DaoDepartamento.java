@@ -31,10 +31,10 @@ public class DaoDepartamento implements DaoInterface<Departamento> {
 			// Recorremos el conjunto de registros obtenidos y lo almacenamos en un string
 			while (rs.next()) {
 				// Para cada registro, asignamos los parámetros de la consulta
-				UUID uuid = UUID.fromString(rs.getString("departamento.id"));
-				String nombre = rs.getString("departamento.nombre");
-				String jefeId = rs.getString("departamento.jefe");
-				String jefeNombre = rs.getString("empleado.nombre");
+				UUID uuid = UUID.fromString(rs.getString(1));
+				String nombre = rs.getString(2);
+				String jefeId = rs.getString(3);
+				String jefeNombre = rs.getString(4);
 
 				Empleado empleado = (jefeId == null) ? null : new Empleado(UUID.fromString(jefeId), jefeNombre);
 				sb.append(new Departamento(uuid, nombre, empleado).toString()).append("\n");

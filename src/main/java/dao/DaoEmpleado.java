@@ -33,14 +33,11 @@ public class DaoEmpleado implements DaoInterface<Empleado> {
 			// Recorremos el conjunto de registros obtenidos y lo almacenamos en un string
 			while (rs.next()) {
 				// Para cada registro, asignamos los parámetros de la consulta
-				UUID uuid = UUID.fromString(rs.getString("empleado.id"));
-				String nombre = rs.getString("empleado.nombre");
-				Double salario = rs.getDouble("empleado.salario");
-				LocalDate nacido = LocalDate.parse(rs.getString("empleado.nacido"),
-						DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-				Departamento idDepartamento = (rs.getString("empleado.departamento") == null) ? null
-						: new Departamento(UUID.fromString(rs.getString("empleado.departamento")),
-								rs.getString("departamento.nombre"));
+				UUID uuid = UUID.fromString(rs.getString(1));
+				String nombre = rs.getString(2);
+				Double salario = rs.getDouble(3);
+				LocalDate nacido = LocalDate.parse(rs.getString(4), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+				Departamento idDepartamento = (rs.getString(5) == null) ? null : new Departamento(UUID.fromString(rs.getString(5)), rs.getString(6));
 				sb.append(new Empleado(uuid, nombre, salario, nacido, idDepartamento).toString()).append("\n");
 			}
 			rs.close();
