@@ -34,7 +34,6 @@ public class MenuPrincipal {
 					IO.println("\nHas salido del menú");
 					SingletonConexion.closeConnection();
 					System.exit(1);
-					return;
 				default:
 					IO.println(Colores.ROJO + "Opción no válida" + Colores.RESET);
 			}
