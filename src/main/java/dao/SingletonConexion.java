@@ -81,6 +81,8 @@ public class SingletonConexion {
     private void crearTablas() {
     	try {
             Statement statement = connection.createStatement();
+            
+            // Definimos el tipo de dato 'texto' según el SGBD 
             String tipo = (name.equals("MariaDB")) ? "VARCHAR(50)" : "STRING";
 
             // Creamos la tabla departamento
