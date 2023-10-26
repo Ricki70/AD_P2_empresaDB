@@ -1,5 +1,8 @@
 package constantes.color;
 
+/**
+ * Clase que contiene los colores que se usarán en la aplicación
+ */
 public class Colores {
 
     // Colores de texto

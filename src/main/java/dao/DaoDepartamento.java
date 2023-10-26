@@ -10,6 +10,9 @@ import model.Departamento;
 import model.Empleado;
 import view.MenuPrincipal;
 
+/**
+ * Clase que implementa los métodos de DaoInterface para gestionar las operaciones CRUD de la tabla Departamento.
+ */
 public class DaoDepartamento implements DaoInterface<Departamento> {
 	
 	@Override
@@ -161,7 +164,8 @@ public class DaoDepartamento implements DaoInterface<Departamento> {
 	}
 	
 	/**
-	 * Método privado para modificar el departamento de un empleado
+	 * Método privado para modificar el departamento de un empleado.
+	 * Este método sólo es necesario para DaoDepartamento.
 	 * 
 	 * @param empleadoID id del empleado que se quiere modificar
 	 * @param departamento que se quiere asignar al empleado

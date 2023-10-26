@@ -7,6 +7,7 @@ import view.MenuPrincipal;
 
 /**
  * Interfaz con los métodos necesarios para realizar operaciones CRUD sobre la base de datos.
+ * 
  * @param <T> tipo de objeto genérico (representa Empleado o Departamento)
  */
 public interface DaoInterface<T> {
@@ -28,7 +29,7 @@ public interface DaoInterface<T> {
 	/**
 	 * Método para actualizar un registro de la tabla.
 	 * 
-	 * @param t registro que se quiere modificar
+	 * @param t registro que se quiere actualizar
 	 * @return número de filas afectadas
 	 */
 	public Boolean update(T t);
@@ -43,6 +44,7 @@ public interface DaoInterface<T> {
 	
 	/**
 	 * Método que comprueba si existe un empleado dado su ID.
+	 * Este método tiene la misma implementación para DaoDepartamento y DaoEmpleado.
 	 * 
 	 * @param empleadoID id por el que buscamos al empleado
 	 * @return true si existe el empleado, false en caso contrario
@@ -57,6 +59,7 @@ public interface DaoInterface<T> {
 	
 	/**
 	 * Método que comprueba si existe un departamento dado su ID.
+	 * Este método tiene la misma implementación para DaoDepartamento y DaoEmpleado.
 	 * 
 	 * @param departamentoID id por el que buscamos el departamento
 	 * @return true si existe el departamento, false en caso contrario
@@ -70,7 +73,8 @@ public interface DaoInterface<T> {
 	}
 	
 	/**
-	 * Método privado para resetear a NULL el jefe de un departamento
+	 * Método privado para resetear a NULL el jefe de un departamento.
+	 * Este método tiene la misma implementación para DaoDepartamento y DaoEmpleado.
 	 * 
 	 * @param empleadoID id del jefe del departamento
 	 * @return true si se ha podido modificar, false en caso contrario

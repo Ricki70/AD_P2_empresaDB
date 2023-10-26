@@ -8,6 +8,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Clase para gestionar la conexión a la base de datos y la creación de las tablas.
+ */
 public class SingletonConexion {
 	/**
 	 * Variable estática de tipo Connection que será nuestra conexión a la base de datos
@@ -20,7 +23,7 @@ public class SingletonConexion {
     public static String name;
 
     /**
-     * Constructor donde creamos la conexión a la base de datos
+     * Constructor donde creamos la conexión a la base de datos.
      */
     private SingletonConexion() {
         // Carga la configuración desde el archivo properties
@@ -28,7 +31,6 @@ public class SingletonConexion {
         try (FileInputStream input = new FileInputStream("Conexion_BD.properties")) {
             properties.load(input);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new RuntimeException("Error al cargar el archivo de propiedades.");
         }
 
@@ -46,7 +48,6 @@ public class SingletonConexion {
             // Creamos las tablas
             crearTablas();
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException("Error al establecer la conexión a la base de datos.");
         }
     }
@@ -70,12 +71,12 @@ public class SingletonConexion {
         try {
 			connection.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Error al cerrar la conexión a la base de datos.");
 		}
     }
     
     /**
-     * Creamos las tablas Empleado y Departamento en la base de datos
+     * Método donde creamos las tablas Empleado y Departamento en la base de datos.
      */
     private void crearTablas() {
     	try {
@@ -96,23 +97,9 @@ public class SingletonConexion {
                     + "nacido " + tipo + ","
                     + "departamento " + tipo + ")");
             
-            // Creamos las foreign key de las tablas
-            // Controlamos que no se creen las foreign key si ya existen las tablas
-//            try {
-//            	statement.executeUpdate("ALTER TABLE departamento "
-//                		+ "ADD CONSTRAINT fk_jefe " 
-//                		+ "FOREIGN KEY (jefe) REFERENCES empleado(id)");
-//                
-//                statement.executeUpdate("ALTER TABLE empleado "
-//                		+ "ADD CONSTRAINT fk_departamento " 
-//                		+ "FOREIGN KEY (departamento) REFERENCES departamento(id)"); 	
-//            } catch(Exception e) {
-//            }
-            
             // Cerramos la declaración
             statement.close();
         } catch (Exception e) {
-            e.printStackTrace();
             throw new RuntimeException("Error al crear las tablas en la base de datos.");
         }
     }

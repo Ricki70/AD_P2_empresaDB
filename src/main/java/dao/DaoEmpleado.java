@@ -12,6 +12,9 @@ import model.Departamento;
 import model.Empleado;
 import view.MenuPrincipal;
 
+/**
+ * Clase que implementa los métodos de DaoInterface para gestionar las operaciones CRUD de la tabla Empleado.
+ */
 public class DaoEmpleado implements DaoInterface<Empleado> {
 
 	@Override

@@ -11,6 +11,10 @@ import model.Departamento;
 import model.Empleado;
 
 public class MenuEmpleados {
+	
+	/**
+	 * Método para mostrar el menú de empleado y gestionar la opción elegida.
+	 */
 	public static void mostrarMenu() {
 		DaoEmpleado daoEmpleado = new DaoEmpleado();
 
@@ -25,8 +29,7 @@ public class MenuEmpleados {
 
 		while (true) {
 			opciones.stream().forEach(System.out::print);
-			IO.print("\nIntroduce tu elección: ");
-			switch (IO.readInt()) {
+			switch (IO.readInt("\nIntroduce tu elección: ")) {
 				case 1:
 					listarEmpleados(daoEmpleado);
 					break;
@@ -48,10 +51,20 @@ public class MenuEmpleados {
 		}
 	}
 
+	/**
+	 * Método para listar los empleados al usuario.
+	 * 
+	 * @param daoEmpleado
+	 */
 	private static void listarEmpleados(DaoEmpleado daoEmpleado) {
 		IO.print(daoEmpleado.listar());
 	}
 
+	/**
+	 * Método para solicitar campos de un empleado e insertarlo en la base de datos.
+	 * 
+	 * @param daoEmpleado
+	 */
 	private static void insertEmpleado(DaoEmpleado daoEmpleado) {
 		// Obtenemos los datos del empleado que se quiere insertar
 		String nombre = IO.readString("Nombre ? ");
@@ -69,6 +82,11 @@ public class MenuEmpleados {
 			+ Colores.RESET);
 	}
 
+	/**
+	 * Método para solicitar nuevos campos de un empleado y actualizarlo en la base de datos.
+	 * 
+	 * @param daoEmpleado
+	 */
 	private static void updateEmpleado(DaoEmpleado daoEmpleado) {
 		// Obtenemos los datos del empleado que se quiere modificar
 		UUID id = IO.readUUID("ID ? ");  
@@ -89,8 +107,13 @@ public class MenuEmpleados {
 				+ Colores.RESET);
 	}
 
+	/**
+	 * Método para eliminar un empleado de la base de datos dado su ID.
+	 * 
+	 * @param daoEmpleado
+	 */
 	private static void deleteEmpleado(DaoEmpleado daoEmpleado) {
-		// Obtenemos los datos del empleado que se quiere modificar
+		// Obtenemos el ID del empleado que se quiere eliminar
 		UUID id = IO.readUUID("ID ? ");
 
 		// Creamos el empleado y lo eliminamos

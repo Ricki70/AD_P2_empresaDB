@@ -8,9 +8,15 @@ import dao.SingletonConexion;
 import io.IO;
 
 public class MenuPrincipal {
-
+	/**
+	 * Conexión a la base de datos
+	 */
 	public static Connection conn = SingletonConexion.getConnection();
 	
+	/**
+	 * Método principal que muestra el menú principal.
+	 * @param args
+	 */
 	public static void main(String[] args) {	
 		List<String> opciones = List.of( 
 				"\n =======|MENU PRINCIPAL|========\n",
@@ -22,8 +28,7 @@ public class MenuPrincipal {
 
 		while (true) {
 			opciones.stream().forEach(System.out :: print);
-			IO.print("\nIntroduce tu elección: ");
-			switch (IO.readInt()) {
+			switch (IO.readInt("\nIntroduce tu elección: ")) {
 				case 1:  // menú departamentos
 					MenuDepartamentos.mostrarMenu();
 					break;
@@ -32,7 +37,7 @@ public class MenuPrincipal {
 					break;
 				case 3:  // salir del menú
 					IO.println("\nHas salido del menú");
-					SingletonConexion.closeConnection();
+					SingletonConexion.closeConnection();  // cerramos conexión a la base de datos
 					System.exit(1);
 				default:
 					IO.println(Colores.ROJO + "Opción no válida" + Colores.RESET);

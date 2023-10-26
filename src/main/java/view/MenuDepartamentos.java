@@ -10,6 +10,10 @@ import model.Departamento;
 import model.Empleado;
 
 public class MenuDepartamentos {
+	
+	/**
+	 * Método para mostrar el menú de departamento y gestionar la opción elegida.
+	 */
 	public static void mostrarMenu() {
 		DaoDepartamento daoDepartamento = new DaoDepartamento();
 
@@ -24,8 +28,7 @@ public class MenuDepartamentos {
 
 		while (true) {
 			opciones.stream().forEach(System.out::print);
-			IO.print("\nIntroduce tu elección: ");
-			switch (IO.readInt()) {
+			switch (IO.readInt("\nIntroduce tu elección: ")) {
 				case 1:
 					listarDepartamentos(daoDepartamento);
 					break;
@@ -47,10 +50,20 @@ public class MenuDepartamentos {
 		}
 	}
 
+	/**
+	 * Método para listar los departamentos al usuario.
+	 * 
+	 * @param daoDepartamento
+	 */
 	private static void listarDepartamentos(DaoDepartamento daoDepartamento) {
 		IO.print(daoDepartamento.listar());
 	}
 
+	/**
+	 * Método para solicitar campos de un departamento e insertarlo en la base de datos.
+	 * 
+	 * @param daoDepartamento
+	 */
 	private static void insertDepartamento(DaoDepartamento daoDepartamento) {
 		// Obtenemos los datos del departamento que se quiere insertar
 		String nombre = IO.readString("Nombre ? ");
@@ -58,12 +71,19 @@ public class MenuDepartamentos {
 
 		// Creamos el departamento y lo insertamos
 		Departamento departamento = new Departamento(nombre, new Empleado(jefe));
+		
+		// Comprobamos si se ha insertado el registro y damos feedback
 		IO.println(daoDepartamento.insert(departamento) ? "Insertado correctamente" :
 				Colores.ROJO 
 				+ "No se ha encontrado un empleado con el ID introducido" 
 				+ Colores.RESET);
 	}
 
+	/**
+	 * Método para solicitar nuevos campos de un departamento y actualizarlo en la base de datos.
+	 * 
+	 * @param daoDepartamento
+	 */
 	private static void updateDepartamento(DaoDepartamento daoDepartamento) {
 		// Obtenemos los datos del departamento que se quiere modificar
 		UUID id = IO.readUUID("ID ? ");
@@ -82,8 +102,13 @@ public class MenuDepartamentos {
 				+ Colores.RESET);
 	}
 
+	/**
+	 * Método para eliminar un departamento de la base de datos dado su ID.
+	 * 
+	 * @param daoDepartamento
+	 */
 	private static void deleteDepartamento(DaoDepartamento daoDepartamento) {
-		// Obtenemos los datos del departamento que se quiere modificar
+		// Obtenemos el ID del departamento que se quiere eliminar
 		UUID id = IO.readUUID("ID ? ");
 
 		// Creamos el departamento y lo eliminamos
