@@ -78,6 +78,17 @@ public class IO {
 			}
 		}
 	}
+	
+	/**
+	 * Lee un valor de tipo byte mostrando un mensaje al usuario
+	 * 
+	 * @param mensaje que se muestra al usuario
+	 * @return
+	 */
+	static public byte readByte(String mensaje) {
+		IO.print(mensaje);
+		return readByte();
+	}
 
 	/**
 	 * Lee un valor de tipo short
@@ -92,6 +103,17 @@ public class IO {
 				System.err.print("ERROR: No es de tipo short ? ");
 			}
 		}
+	}
+	
+	/**
+	 * Lee un valor de tipo short mostrando un mensaje al usuario
+	 * 
+	 * @param mensaje que se muestra al usuario
+	 * @return
+	 */
+	static public short readShort(String mensaje) {
+		IO.print(mensaje);
+		return readShort();
 	}
 
 	/**
@@ -108,6 +130,17 @@ public class IO {
 			}
 		}
 	}
+	
+	/**
+	 * Lee un valor de tipo int mostrando un mensaje al usuario
+	 * 
+	 * @param mensaje que se muestra al usuario
+	 * @return
+	 */
+	static public int readInt(String mensaje) {
+		IO.print(mensaje);
+		return readInt();
+	}
 
 	/**
 	 * Lee un valor de tipo long
@@ -123,6 +156,17 @@ public class IO {
 			}
 		}
 	}
+	
+	/**
+	 * Lee un valor de tipo long mostrando un mensaje al usuario
+	 * 
+	 * @param mensaje que se muestra al usuario
+	 * @return
+	 */
+	static public long readLong(String mensaje) {
+		IO.print(mensaje);
+		return readLong();
+	}
 
 	/**
 	 * Lee un valor de tipo float
@@ -137,6 +181,17 @@ public class IO {
 				System.err.print("ERROR: No es de tipo float ? ");
 			}
 		}
+	}
+	
+	/**
+	 * Lee un valor de tipo float mostrando un mensaje al usuario
+	 * 
+	 * @param mensaje que se muestra al usuario
+	 * @return
+	 */
+	static public float readFloat(String mensaje) {
+		IO.print(mensaje);
+		return readFloat();
 	}
 
 	/**
@@ -155,6 +210,17 @@ public class IO {
 	}
 	
 	/**
+	 * Lee un valor de tipo double mostrando un mensaje al usuario
+	 * 
+	 * @param mensaje que se muestra al usuario
+	 * @return
+	 */
+	static public Double readDouble(String mensaje) {
+		IO.print(mensaje);
+		return readDouble();
+	}
+	
+	/**
 	 * Lee un valor de tipo double que puede ser opcional
 	 * 
 	 * @return
@@ -169,6 +235,17 @@ public class IO {
 			}
 		}
 	}
+	
+	/**
+	 * Lee un valor de tipo double que puede ser opcional mostrando un mensaje al usuario
+	 * 
+	 * @param mensaje que se muestra al usuario
+	 * @return
+	 */
+	static public Double readDoubleOptional(String mensaje) {
+		IO.print(mensaje);
+		return readDoubleOptional();
+	}
 
 	/**
 	 * Lee un valor de tipo boolean
@@ -182,6 +259,17 @@ public class IO {
 			if (s.equals("false")) return false;
 			System.err.print("ERROR: No es de tipo boolean (true o false) ? ");
 		}
+	}
+	
+	/**
+	 * Lee un valor de tipo boolean mostrando un mensaje al usuario
+	 * 
+	 * @param mensaje que se muestra al usuario
+	 * @return
+	 */
+	static public boolean readBoolean(String mensaje) {
+		IO.print(mensaje);
+		return readBoolean();
 	}
 
 	/**
@@ -200,7 +288,19 @@ public class IO {
 	}
 	
 	/**
+	 * Lee un valor de tipo char mostrando un mensaje al usuario
+	 * 
+	 * @param mensaje que se muestra al usuario
+	 * @return
+	 */
+	static public char readChar(String mensaje) {
+		IO.print(mensaje);
+		return readChar();
+	}
+	
+	/**
 	 * Lee un valor de tipo String (no admite cadena vacía)
+	 * 
 	 * @return
 	 */
 	static public String readString() {
@@ -215,6 +315,17 @@ public class IO {
 	}
 	
 	/**
+	 * Lee un valor de tipo String (no admite cadena vacía) mostrando un mensaje al usuario
+	 * 
+	 * @param mensaje que se muestra al usuario
+	 * @return
+	 */
+	static public String readString(String mensaje) {
+		IO.print(mensaje);
+		return readString();
+	}
+	
+	/**
 	 * Lee un valor de tipo String (admite cadena vacía)
 	 * 
 	 * @return
@@ -224,7 +335,19 @@ public class IO {
 	}
 	
 	/**
+	 * Lee un valor de tipo String (admite cadena vacía) mostrando un mensaje al usuario
+	 * 
+	 * @param mensaje que se muestra al usuario
+	 * @return
+	 */
+	static public String readStringOptional(String mensaje) {
+		IO.print(mensaje);
+		return readStringOptional();
+	}
+	
+	/**
 	 * Lee un valor de tipo UUID
+	 * 
 	 * @return
 	 */
 	static public UUID readUUID() {
@@ -235,6 +358,17 @@ public class IO {
 				System.err.print("ERROR: no es de tipo UUID [ej: " + new UUID(0, 0) + "] ? ");
 			}
 		}
+	}
+	
+	/**
+	 * Lee un valor de tipo UUID mostrando un mensaje al usuario
+	 * 
+	 * @param mensaje que se muestra al usuario
+	 * @return
+	 */
+	static public UUID readUUID(String mensaje) {
+		IO.print(mensaje);
+		return readUUID();
 	}
 	
 	/**
@@ -253,7 +387,19 @@ public class IO {
 	}
 	
 	/**
+	 * Lee un valor de tipo UUID que puede ser opcional mostrando un mensaje al usuario
+	 * 
+	 * @param mensaje que se muestra al usuario
+	 * @return
+	 */
+	static public UUID readUUIDOptional(String mensaje) {
+		IO.print(mensaje);
+		return readUUIDOptional();
+	}
+	
+	/**
 	 * Lee un valor de tipo LocalDate
+	 * 
 	 * @return
 	 */
 	static public LocalDate readLocalDate() {
@@ -267,7 +413,19 @@ public class IO {
 	}
 	
 	/**
+	 * Lee un valor de tipo LocalDate mostrando un mensaje al usuario
+	 * 
+	 * @param mensaje que se muestra al usuario
+	 * @return
+	 */
+	static public LocalDate readLocalDate(String mensaje) {
+		IO.print(mensaje);
+		return readLocalDate();
+	}
+	
+	/**
 	 * Lee un valor de tipo LocalDate que puede ser opcional
+	 * 
 	 * @return
 	 */
 	static public LocalDate readLocalDateOptional() {
@@ -280,4 +438,16 @@ public class IO {
 			}
 		}
 	}
+	
+	/**
+	 * Lee un valor de tipo LocalDate que puede ser opcional mostrando un mensaje al usuario
+	 * 
+	 * @param mensaje que se muestra al usuario
+	 * @return
+	 */
+	static public LocalDate readLocalDateOptional(String mensaje) {
+		IO.print(mensaje);
+		return readLocalDateOptional();
+	}	
+	
 }

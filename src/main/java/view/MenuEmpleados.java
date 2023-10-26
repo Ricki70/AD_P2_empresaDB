@@ -54,14 +54,10 @@ public class MenuEmpleados {
 
 	private static void insertEmpleado(DaoEmpleado daoEmpleado) {
 		// Obtenemos los datos del empleado que se quiere insertar
-		IO.print("Nombre ? ");
-		String nombre = IO.readString();
-		IO.print("Salario ? ");
-		Double salario = IO.readDouble();
-		IO.print("Fecha de nacimiento ? ");
-		LocalDate nacido = IO.readLocalDate(); 
-		IO.print("ID del departamento ? ");
-		UUID departamento = IO.readUUIDOptional(); 
+		String nombre = IO.readString("Nombre ? ");
+		Double salario = IO.readDouble("Salario ? ");
+		LocalDate nacido = IO.readLocalDate("Fecha de nacimiento ? "); 
+		UUID departamento = IO.readUUIDOptional("ID del departamento ? "); 
 
 		// Creamos el empleado y lo insertamos
 		Empleado empleado = new Empleado(nombre, salario, nacido, new Departamento(departamento));
@@ -75,16 +71,11 @@ public class MenuEmpleados {
 
 	private static void updateEmpleado(DaoEmpleado daoEmpleado) {
 		// Obtenemos los datos del empleado que se quiere modificar
-		IO.print("ID ? ");
-		UUID id = IO.readUUID();  
-		IO.print("Nombre ? ");
-		String nombre = IO.readStringOptional();
-		IO.print("Salario ? ");
-		Double salario = IO.readDoubleOptional();
-		IO.print("Fecha de nacimiento ? ");
-		LocalDate nacido = IO.readLocalDateOptional();
-		IO.print("ID del departamento ? ");
-		UUID departamento = IO.readUUIDOptional();  
+		UUID id = IO.readUUID("ID ? ");  
+		String nombre = IO.readStringOptional("Nombre ? ");
+		Double salario = IO.readDoubleOptional("Salario ? ");
+		LocalDate nacido = IO.readLocalDateOptional("Fecha de nacimiento ? ");
+		UUID departamento = IO.readUUIDOptional("ID del departamento ? ");  
 
 		// Creamos el empleado y lo modificamos
 		Empleado empleado = new Empleado(id, nombre, salario, nacido, new Departamento(departamento));
@@ -100,8 +91,7 @@ public class MenuEmpleados {
 
 	private static void deleteEmpleado(DaoEmpleado daoEmpleado) {
 		// Obtenemos los datos del empleado que se quiere modificar
-		IO.print("ID ? ");
-		UUID id = IO.readUUID();
+		UUID id = IO.readUUID("ID ? ");
 
 		// Creamos el empleado y lo eliminamos
 		Empleado empleado = new Empleado(id);

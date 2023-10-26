@@ -53,10 +53,8 @@ public class MenuDepartamentos {
 
 	private static void insertDepartamento(DaoDepartamento daoDepartamento) {
 		// Obtenemos los datos del departamento que se quiere insertar
-		IO.print("Nombre ? ");
-		String nombre = IO.readString();
-		IO.print("Jefe ? ");
-		UUID jefe = IO.readUUIDOptional();
+		String nombre = IO.readString("Nombre ? ");
+		UUID jefe = IO.readUUIDOptional("Jefe ? ");
 
 		// Creamos el departamento y lo insertamos
 		Departamento departamento = new Departamento(nombre, new Empleado(jefe));
@@ -68,12 +66,9 @@ public class MenuDepartamentos {
 
 	private static void updateDepartamento(DaoDepartamento daoDepartamento) {
 		// Obtenemos los datos del departamento que se quiere modificar
-		IO.print("ID ? ");
-		UUID id = IO.readUUID();
-		IO.print("Nombre ? ");
-		String nombre = IO.readStringOptional();
-		IO.print("Jefe ? ");
-		UUID jefe = IO.readUUIDOptional();
+		UUID id = IO.readUUID("ID ? ");
+		String nombre = IO.readStringOptional("Nombre ? ");
+		UUID jefe = IO.readUUIDOptional("Jefe ? ");
 
 		// Creamos el departamento y lo modificamos
 		Departamento departamento = new Departamento(id, nombre, new Empleado(jefe));
@@ -89,8 +84,7 @@ public class MenuDepartamentos {
 
 	private static void deleteDepartamento(DaoDepartamento daoDepartamento) {
 		// Obtenemos los datos del departamento que se quiere modificar
-		IO.print("ID ? ");
-		UUID id = IO.readUUID();
+		UUID id = IO.readUUID("ID ? ");
 
 		// Creamos el departamento y lo eliminamos
 		Departamento departamento = new Departamento(id);
